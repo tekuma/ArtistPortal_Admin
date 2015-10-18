@@ -1,0 +1,490 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="X-UA-Compatible" IE="EmulateIE9" />
+	<title>钝感力后台管理</title>
+	<link href="../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="../plugins/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+	<link href="../plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="../themes/admin/metronic_admin/_static/css/style-metro.css" rel="stylesheet" type="text/css">
+	<link href="../themes/admin/metronic_admin/_static/css/style.css" rel="stylesheet" type="text/css">
+	<link href="../themes/admin/metronic_admin/_static/css/style-responsive.css" rel="stylesheet" type="text/css">
+	<link href="../themes/admin/metronic_admin/_static/css/themes/lightgrey.css" rel="stylesheet" type="text/css" id="style_color">
+	<link href="../plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css">
+	
+	
+	<link href="../plugins/gritter/css/jquery.gritter.css" rel="stylesheet" type="text/css">
+	<link href="../plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css" />
+	<link href="../plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" media="screen">
+	<link href="../plugins/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen">
+	<link href="../themes/admin/metronic_admin/_static/css/pages/tasks.css" rel="stylesheet" type="text/css" media="screen">
+	<link href="../plugins/bootstrap-fileupload/bootstrap-fileupload.css" rel="stylesheet" type="text/css"  />
+	<link href="../themes/admin/metronic_admin/_static/css/pages/inbox.css" rel="stylesheet" type="text/css" />
+
+	
+	
+	<link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body class="page-header-fixed" id="bodyid_index_body">
+	<!-- BEGIN HEADER -->   
+	<div class="header navbar navbar-inverse navbar-fixed-top" >
+		<!-- BEGIN TOP NAVIGATION BAR -->
+		<div class="navbar-inner">
+			<div class="container-fluid" style="background-color: #51a104">
+				<!-- BEGIN LOGO -->
+				<a class="brand" href="#">
+				<b>钝感力管理系统</b>
+				</a>
+				<!-- END LOGO -->
+				<!-- BEGIN RESPONSIVE MENU TOGGLER -->
+				<a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
+				<img src="../themes/admin/metronic_admin/_static/img/menu-toggler.png" alt="" />
+				</a> 
+				<ul class="nav pull-right" style="margin-top: 8px; margin-right: 10px; t">      
+						<img alt="" src="../images/yh.gif" />
+						<span class="username"  style="color: #ddd">欢迎您 : ${sessionUser.yhxm}<shiro:principal property="name"/></span>
+						<a href="javascript:void(0)" onclick="location.href='http://127.0.0.1:8080/PsychologyServer/'"><span class="username" style="color: white">退出<shiro:principal property="name"/></span></a>
+				</ul>
+				<!-- END RESPONSIVE MENU TOGGLER -->            
+				<!-- BEGIN TOP NAVIGATION MENU -->              
+		<%-- 		<ul class="nav pull-right">
+					<!-- BEGIN NOTIFICATION DROPDOWN -->   
+					<li class="dropdown" id="header_notification_bar">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<i class="icon-warning-sign"></i>
+						<span class="badge">6</span>
+						</a>
+						<ul class="dropdown-menu extended notification">
+							<li>
+								<p>You have 14 new notifications</p>
+							</li>
+							<li>
+								<ul class="dropdown-menu-list scroller" style="height:250px">
+									<li>
+										<a href="#">
+										<span class="label label-success"><i class="icon-plus"></i></span>
+										New user registered. 
+										<span class="time">Just now</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+										<span class="label label-important"><i class="icon-bolt"></i></span>
+										Server #12 overloaded. 
+										<span class="time">15 mins</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+										<span class="label label-warning"><i class="icon-bell"></i></span>
+										Server #2 not responding.
+										<span class="time">22 mins</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+										<span class="label label-info"><i class="icon-bullhorn"></i></span>
+										Application error.
+										<span class="time">40 mins</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+										<span class="label label-important"><i class="icon-bolt"></i></span>
+										Database overloaded 68%. 
+										<span class="time">2 hrs</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+										<span class="label label-important"><i class="icon-bolt"></i></span>
+										2 user IP blocked.
+										<span class="time">5 hrs</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+										<span class="label label-warning"><i class="icon-bell"></i></span>
+										Storage Server #4 not responding.
+										<span class="time">45 mins</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+										<span class="label label-info"><i class="icon-bullhorn"></i></span>
+										System Error.
+										<span class="time">55 mins</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+										<span class="label label-important"><i class="icon-bolt"></i></span>
+										Database overloaded 68%. 
+										<span class="time">2 hrs</span>
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="external">
+								<a href="#">See all notifications <i class="m-icon-swapright"></i></a>
+							</li>
+						</ul>
+					</li>
+					<!-- END NOTIFICATION DROPDOWN -->
+					<!-- BEGIN INBOX DROPDOWN -->
+					<li class="dropdown" id="header_inbox_bar">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<i class="icon-envelope"></i>
+						<span class="badge">5</span>
+						</a>
+						<ul class="dropdown-menu extended inbox">
+							<li>
+								<p>You have 12 new messages</p>
+							</li>
+							<li>
+								<ul class="dropdown-menu-list scroller" style="height:250px">
+									<li>
+										<a href="inbox.html?a=view">
+										<span class="photo"><img src="./../themes/admin/metronic_admin/_static/img/avatar2.jpg" alt="" /></span>
+										<span class="subject">
+										<span class="from">Lisa Wong</span>
+										<span class="time">Just Now</span>
+										</span>
+										<span class="message">
+										Vivamus sed auctor nibh congue nibh. auctor nibh
+										auctor nibh...
+										</span>  
+										</a>
+									</li>
+									<li>
+										<a href="inbox.html?a=view">
+										<span class="photo"><img src="./../themes/admin/metronic_admin/_static/img/avatar3.jpg" alt="" /></span>
+										<span class="subject">
+										<span class="from">Richard Doe</span>
+										<span class="time">16 mins</span>
+										</span>
+										<span class="message">
+										Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh
+										auctor nibh...
+										</span>  
+										</a>
+									</li>
+									<li>
+										<a href="inbox.html?a=view">
+										<span class="photo"><img src="./../themes/admin/metronic_admin/_static/img/avatar1.jpg" alt="" /></span>
+										<span class="subject">
+										<span class="from">Bob Nilson</span>
+										<span class="time">2 hrs</span>
+										</span>
+										<span class="message">
+										Vivamus sed nibh auctor nibh congue nibh. auctor nibh
+										auctor nibh...
+										</span>  
+										</a>
+									</li>
+									<li>
+										<a href="inbox.html?a=view">
+										<span class="photo"><img src="./../themes/admin/metronic_admin/_static/img/avatar2.jpg" alt="" /></span>
+										<span class="subject">
+										<span class="from">Lisa Wong</span>
+										<span class="time">40 mins</span>
+										</span>
+										<span class="message">
+										Vivamus sed auctor 40% nibh congue nibh...
+										</span>  
+										</a>
+									</li>
+									<li>
+										<a href="inbox.html?a=view">
+										<span class="photo"><img src="./../themes/admin/metronic_admin/_static/img/avatar3.jpg" alt="" /></span>
+										<span class="subject">
+										<span class="from">Richard Doe</span>
+										<span class="time">46 mins</span>
+										</span>
+										<span class="message">
+										Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh
+										auctor nibh...
+										</span>  
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="external">
+								<a href="inbox.html">See all messages <i class="m-icon-swapright"></i></a>
+							</li>
+						</ul>
+					</li>
+					<!-- END INBOX DROPDOWN -->
+					<!-- BEGIN TODO DROPDOWN -->
+					<li class="dropdown" id="header_task_bar">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<i class="icon-tasks"></i>
+						<span class="badge">5</span>
+						</a>
+						<ul class="dropdown-menu extended tasks">
+							<li>
+								<p>You have 12 pending tasks</p>
+							</li>
+							<li>
+								<ul class="dropdown-menu-list scroller"  style="height:250px">
+									<li>
+										<a href="#">
+										<span class="task">
+										<span class="desc">New release v1.2</span>
+										<span class="percent">30%</span>
+										</span>
+										<span class="progress progress-success ">
+										<span style="width: 30%;" class="bar"></span>
+										</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+										<span class="task">
+										<span class="desc">Application deployment</span>
+										<span class="percent">65%</span>
+										</span>
+										<span class="progress progress-danger progress-striped active">
+										<span style="width: 65%;" class="bar"></span>
+										</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+										<span class="task">
+										<span class="desc">Mobile app release</span>
+										<span class="percent">98%</span>
+										</span>
+										<span class="progress progress-success">
+										<span style="width: 98%;" class="bar"></span>
+										</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+										<span class="task">
+										<span class="desc">Database migration</span>
+										<span class="percent">10%</span>
+										</span>
+										<span class="progress progress-warning progress-striped">
+										<span style="width: 10%;" class="bar"></span>
+										</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+										<span class="task">
+										<span class="desc">Web server upgrade</span>
+										<span class="percent">58%</span>
+										</span>
+										<span class="progress progress-info">
+										<span style="width: 58%;" class="bar"></span>
+										</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+										<span class="task">
+										<span class="desc">Mobile development</span>
+										<span class="percent">85%</span>
+										</span>
+										<span class="progress progress-success">
+										<span style="width: 85%;" class="bar"></span>
+										</span>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+										<span class="task">
+										<span class="desc">New UI release</span>
+										<span class="percent">18%</span>
+										</span>
+										<span class="progress progress-important">
+										<span style="width: 18%;" class="bar"></span>
+										</span>
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="external">
+								<a href="#">See all tasks <i class="m-icon-swapright"></i></a>
+							</li>
+						</ul>
+					</li>
+					<!-- END TODO DROPDOWN -->               
+					<!-- BEGIN USER LOGIN DROPDOWN -->
+					<li class="dropdown user">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<img alt="" src="../themes/admin/metronic_admin/_static/img/avatar1_small.jpg" />
+						<span class="username">Bob Nilson</span>
+						<i class="icon-angle-down"></i>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="extra_profile.html"><i class="icon-user"></i> My Profile</a></li>
+							<li><a href="page_calendar.html"><i class="icon-calendar"></i> My Calendar</a></li>
+							<li><a href="inbox.html"><i class="icon-envelope"></i> My Inbox <span class="badge badge-important">3</span></a></li>
+							<li><a href="#"><i class="icon-tasks"></i> My Tasks <span class="badge badge-success">8</span></a></li>
+							<li class="divider"></li>
+							<li><a href="javascript:;" id="trigger_fullscreen"><i class="icon-move"></i> Full Screen</a></li>
+							<li><a href="extra_lock.html"><i class="icon-lock"></i> Lock Screen</a></li>
+							<li><a href="login.html"><i class="icon-key"></i> Log Out</a></li>
+						</ul>
+					</li>
+					<!-- END USER LOGIN DROPDOWN -->
+					<!-- END USER LOGIN DROPDOWN -->
+				</ul> --%>
+				<!-- END TOP NAVIGATION MENU --> 
+			</div>
+		</div>
+		<!-- END TOP NAVIGATION BAR -->
+	</div>
+	<!-- END HEADER -->
+	
+	
+	<!-- BEGIN CONTAINER -->
+	<div class="page-container" >
+		<!-- BEGIN SIDEBAR -->
+		<div class="page-sidebar nav-collapse collapse" >
+			<!-- BEGIN SIDEBAR MENU -->        
+			<ul class="page-sidebar-menu">
+				<li style="display:none">
+					<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+					<div class="sidebar-toggler hidden-phone"></div>
+					<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+				</li>
+				
+				<s:iterator value="xtgnfllist" id="xtgnfll">
+					<s:if test='#xtgnfll.gnfl=="功能模块"'>
+						<li   >
+							<a href="javascript:;">
+								<i class="icon-cogs"></i> 
+								<span class="title"><s:property value="#xtgnfll.gnmc" /></span>
+								<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<s:iterator value="xtgnlist" id="xtgnl">
+									<s:if test='#xtgnfll.gnmc==#xtgnl.gnfl'>
+										<li  class="liclass_index_menu" onclick="index_menuClick('music/<s:property value="#xtgnl.url" />')" >
+											<a href="#">
+												<s:property value="#xtgnl.gnmc"  />
+											</a>
+										</li>
+									</s:if>
+								</s:iterator>
+							</ul>
+						</li>
+					</s:if>
+				</s:iterator>
+				
+				<%-- <li  class="liclass_index_menu" onclick="index_menuClick('system/system_openForm.do')" >
+					<a href="javascript:;">
+						<i class="icon-cogs"></i> 
+						<span class="title">表单模版</span>
+					</a>
+					
+				</li>
+				<li  class="liclass_index_menu start active"  onclick="index_menuClick('system/system_openTable.do')" >
+					<a href="javascript:;" >
+						<i class="icon-cogs"></i> 
+						<span class="title">表格模版</span>
+					</a>
+				</li> --%>
+			</ul>
+			<!-- END SIDEBAR MENU -->
+		</div>
+		<!-- END SIDEBAR -->
+		
+		
+		<!-- BEGIN PAGE -->
+		<div class="page-content divclass_index_content" >
+			<!-- 动态加载文本部分 -->
+		</div>
+		<!-- END PAGE -->
+		
+		
+	</div>
+	<!-- END CONTAINER -->
+	
+	
+	<!-- 全局提示框 -->
+	<a href="#divid_index_alert" id="aid_index_alert" role="button" class="btn btn-danger" data-toggle="modal" style="display: none;"></a>
+	<div style="display: none;" id="divid_index_alert" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+			<h3 id="divid_index_alert_title"></h3>
+		</div>
+		<div class="modal-body">
+			<p  id="divid_index_alert_content"></p>
+		</div>
+		<div class="modal-footer">
+			<button id="divid_index_alert_button" data-dismiss="modal" class="btn green">确定</button>
+		</div>
+	</div>
+	
+	<!-- 全局选择提示框 -->
+	<a href="#divid_index_alertConfirm" id="aid_index_alertConfirm" role="button" class="btn btn-warning" data-toggle="modal" style="display: none;"></a>
+	<div style="display: none;" id="divid_index_alertConfirm" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+			<h3 id="divid_index_alertConfirm_title"></h3>
+		</div>
+		<div class="modal-body">
+			<p id="divid_index_alertConfirm_content"></p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+			<button id="divid_index_alertConfirm_saveButton" data-dismiss="modal" class="btn blue">确定</button>
+		</div>
+	</div>
+	
+	
+	
+	<!-- 首页加载的js -->
+	<script src="../plugins/jq.js" type="text/javascript"></script>
+	<script src="../plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+	<script src="../plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>      
+	<script src="../plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="../plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js" type="text/javascript" ></script>
+	<!--[if lt IE 9]>
+	<script src="../plugins/excanvas.min.js"></script>
+	<script src="../plugins/respond.min.js"></script>  
+	<![endif]-->   
+	<script src="../plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+	<script src="../plugins/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>   
+	<script src="../plugins/flot/jquery.flot.js" type="text/javascript"></script>
+	<script src="../themes/admin/metronic_admin/_static/scripts/app.js" type="text/javascript"></script>
+	
+	<script src="../js/ajaxfileupload.js" type="text/javascript"></script>
+	<script src="../js/zhhb.public.js" type="text/javascript"></script>   
+	
+	<script>
+		jQuery(document).ready(function() {    
+		   App.init(); // initlayout and core plugins
+		   public_openContent("system/system_openTable.do");//打开默认页面
+		   $(".page-container").css("min-height",($(window).height()-46)+"px");
+		   $(".page-content").css("min-height",($(window).height()-46)+"px");
+		   
+		});
+		//菜单栏点击
+		function index_menuClick(contentURL){
+			//alert(contentURL);
+			public_menuContentURL=contentURL;
+			$(".liclass_index_menu").each(function(){
+				
+				if(("index_menuClick('"+contentURL+"')").indexOf($(this).attr("onclick"))>=0){
+					$(this).attr("class","liclass_index_menu start active");
+					public_openContent(contentURL);
+					
+				}else{
+					$(this).attr("class","liclass_index_menu");
+				}
+			});
+			
+			
+		}
+	</script>
+</body>
+<!-- END BODY -->
+</html>

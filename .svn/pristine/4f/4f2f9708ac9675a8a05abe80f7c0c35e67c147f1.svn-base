@@ -1,0 +1,49 @@
+package com.zhhb.system.entity;
+
+
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+
+public class Dictionary extends BaseEntity{
+
+	private Integer bh;//编号
+	private String zdlb;//字典类别
+	private String zdz;//字典值
+	private Integer xsxh;//显示序号
+	private Integer sfmr;//是否默认
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public String getZdlb() {
+		return zdlb;
+	}
+	public void setZdlb(String zdlb) {
+		this.zdlb = zdlb;
+	}
+	public String getZdz() {
+		return zdz;
+	}
+	public void setZdz(String zdz) {
+		this.zdz = zdz;
+	}
+	public Integer getXsxh() {
+		return xsxh;
+	}
+	public void setXsxh(Integer xsxh) {
+		this.xsxh = xsxh;
+	}
+	public Integer getSfmr() {
+		return sfmr;
+	}
+	public void setSfmr(Integer sfmr) {
+		this.sfmr = sfmr;
+	}
+	
+	
+	
+	
+}

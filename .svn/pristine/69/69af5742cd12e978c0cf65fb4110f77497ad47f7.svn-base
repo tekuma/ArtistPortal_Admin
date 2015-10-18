@@ -1,0 +1,63 @@
+package com.zhhb.system.entity;
+
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Functionlist extends BaseEntity {
+	
+	private Integer bh; //编号
+	private String gnmc; //功能名称
+	private String gnbm; //功能编码
+	private String tplj; //图片路径
+	private String url; //跳转地址
+	private String gnfl; //功能分类
+	private Integer gnxh;//功能序号
+	
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public String getGnmc() {
+		return gnmc;
+	}
+	public void setGnmc(String gnmc) {
+		this.gnmc = gnmc;
+	}
+	public String getGnbm() {
+		return gnbm;
+	}
+	public void setGnbm(String gnbm) {
+		this.gnbm = gnbm;
+	}
+	public String getTplj() {
+		return tplj;
+	}
+	public void setTplj(String tplj) {
+		this.tplj = tplj;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	public String getGnfl() {
+		return gnfl;
+	}
+	public void setGnfl(String gnfl) {
+		this.gnfl = gnfl;
+	}
+	public Integer getGnxh() {
+		return gnxh;
+	}
+	public void setGnxh(Integer gnxh) {
+		this.gnxh = gnxh;
+	}
+	
+	
+	
+	
+	
+}

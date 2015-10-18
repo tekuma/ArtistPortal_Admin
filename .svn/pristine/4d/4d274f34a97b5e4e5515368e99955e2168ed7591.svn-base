@@ -1,0 +1,300 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+
+
+<script >
+
+	//查看排行
+	function findcountlist_findcountlist(pageNo,urlxh,str){
+		var sch=$("#input_findcountlist_ss").val();
+		var pagnum;
+		if(pageNo=='x97'){
+			var netxpage=$("#nextpage").val();
+			if(netxpage!=undefined&&netxpage!=null&&netxpage!=""){
+				pagnum=netxpage;
+			}else{
+				return false;
+			}
+		}else{
+			pagnum=pageNo;
+		}
+		var name="";
+		if(urlxh==1){
+			url="musicManage_findAuthorphtoplist.do?pageNo="+pagnum+"&str="+str+"&sch="+sch;
+			name+="作者";
+		}else if(urlxh==2){
+			url="musicManage_findMusiczjphtoplist.do?pageNo="+pagnum+"&str="+str+"&sch="+sch;
+			name+="专辑";
+		}else{
+			url="musicManage_findMusicyyphtoplist.do?pageNo="+pagnum+"&str="+str+"&sch="+sch;
+			name+="音乐";
+		}
+		//alert(url);
+		document.getElementById("divid_findcountlist_allph").style.display="none";
+		$.ajax({url:url,type:"post",
+			async:false,cache:false,
+			success:function(pageResult){
+				//alert(pageResult);
+				//alert(pageResult.pageNo);
+				//alert(pageResult.recTotal);
+				var authorHTML="";
+				if(pageResult.list!=undefined){
+					authorHTML+="<div style=\"border: 2px solid; border-color:#fafafa; width: 1080px;  height: 700px; background-color: #FFFFFF; float: left;\">";
+					authorHTML+="<div class=\"caption\" style=\"font-size: 24px; background-color: #EEEEEE;text-align:center; padding-top: 8px; padding-bottom: 8px;\">"+name+"排行榜</div>";
+					authorHTML+="<input type=\"text\" name=\"\" id=\"input_findcountlist_ss\" style=\"margin-bottom: -1px; border:1px solid; border-color:#0088CC;\">";
+					authorHTML+="<button type=\"button\" class=\"btn\" onclick=\"findcountlist_findcountlist('1','"+urlxh+"','"+str+"')\" style=\"color: #0088CC; hiegth:7px;\">检索</button>";
+					authorHTML+="<button type=\"button\" onclick=\"index_menuClick('music/musicManage_findcountlist.do')\" class=\"btn\" style=\"color: #0088CC; float: right;\">返回统计</button>";
+					authorHTML+="<table class=\"table table-striped table-bordered table-hover table-full-width\" style=\"border-bottom: 1px solid;border-bottom-color:#DDDDDD;\" id=\"divid_findAuthorphtoplist_old\">";
+					authorHTML+="<tr>";	
+					authorHTML+="<td>序号</td>";
+					if(urlxh==1){
+						authorHTML+="<td>作者姓名</td>";
+					}else if(urlxh==2){
+						authorHTML+="<td>专辑名称</td>";
+					}else{
+						authorHTML+="<td>音乐名称</td>";
+					}
+					authorHTML+="<td><a href=\"#\" onclick=\"findcountlist_findcountlist('1','"+urlxh+"','0')\">关注量</a></td>";
+					authorHTML+="<td><a href=\"#\" onclick=\"findcountlist_findcountlist('1','"+urlxh+"','5')\">收藏量</a></td>";
+					authorHTML+="<td>下载量</td>";
+					authorHTML+="</tr>";
+					for(var i=0;i<pageResult.list.length;i++){
+						authorHTML+="<tr>";
+						authorHTML+="<td>"+(i+((pageResult.pageNo-1)*10+1))+"</td>";
+						if(urlxh==1){
+							authorHTML+="<td>"+pageResult.list[i].zzxm+"</td>";
+						}else if(urlxh==2){
+							authorHTML+="<td>"+pageResult.list[i].zjmc+"</td>";
+						}else{
+							authorHTML+="<td>"+pageResult.list[i].yymc+"</td>";
+						}
+						if(str==5){
+							authorHTML+="<td>"+pageResult.list[i].dz+"</td>";
+							authorHTML+="<td style=\"color: red;\">"+pageResult.list[i].sc+"</td>";
+						}else{
+							authorHTML+="<td style=\"color: red;\">"+pageResult.list[i].dz+"</td>";
+							authorHTML+="<td>"+pageResult.list[i].sc+"</td>";
+						}
+						authorHTML+="<td>"+pageResult.list[i].xz+"</td>";
+						authorHTML+="</tr>";
+					}
+					authorHTML+="</table>";
+					authorHTML+="<div class=\"row-fluid\"><div class=\"span6\">";
+					authorHTML+="<div id=\"sample_1_info\" class=\"dataTables_info\">当前第"+pageResult.pageNo+"页，共"+pageResult.pageTotal+"页，每页 "+pageResult.pageSize+"条，共"+pageResult.recTotal+"条</div></div>";
+					authorHTML+="<div class=\"span6\" style=\"margin-top:-37px;\">";
+					authorHTML+="<div class=\"dataTables_paginate paging_bootstrap pagination\">";
+					authorHTML+="<ul class=\"pager\">";
+					if(pageResult.pageNo>1){
+						authorHTML+="<li class=\"previous  disabled\">";
+						authorHTML+="<a onclick=\"findcountlist_findcountlist('"+(pageResult.pageNo-1)+"','"+urlxh+"','"+str+"')\" style=\"color: #0088CC\">← <span class=\"hidden-480\">上一页</span></a>";
+						authorHTML+="</li>";
+					}else{
+						authorHTML+="<li class=\"prev disabled\">";
+						authorHTML+="<a>← <span class=\"hidden-480\">上一页</span></a>";
+						authorHTML+="</li>";
+					}
+					/* for(var i=1;i<(pageResult.pageTotal+1);i++){
+						if(i==pageResult.pageNo){ 
+							authorHTML+="<li class=\"active\"><a>"+i+"</a></li>";
+							//authorHTML+="<li><a onclick=\"findcountlist_findcountlist('"+i+"','"+urlxh+"','"+str+"')\">"+i+"</a></li>";
+						}else{
+							authorHTML+="<li><a onclick=\"findcountlist_findcountlist('"+i+"','"+urlxh+"','"+str+"')\">"+i+"</a></li>";
+						}
+					} */
+					
+					  var pageNumSize =6;//表示最多一页显示多少条页码号
+				      var pageNo = pageResult.pageNo; //表示当前的页数 
+				      var totalPages = pageResult.pageTotal; //表示一共要显示多少页的数据  
+				      var startPageNo =  pageResult.pageNo;//开始页码数  
+				      var endPageNo = pageNo + pageNumSize - 1;//结束页码数  
+				      for(var i= startPageNo;i<=(endPageNo > totalPages ? totalPages : endPageNo);i++){
+				    	if(i==pageResult.pageNo){ 
+			    		 	authorHTML+="<li class=\"active\"><a>"+i+"</a></li>";
+						}else{
+							authorHTML+="<li><a onclick=\"findcountlist_findcountlist('"+i+"','"+urlxh+"','"+str+"')\">"+i+"</a></li>";
+						}
+				      } 
+				      
+					if(pageResult.pageNo<pageResult.pageTotal){
+						authorHTML+="<li class=\"\">";
+						authorHTML+="<a onclick=\"findcountlist_findcountlist('"+(pageResult.pageNo+1)+"','"+urlxh+"','"+str+"')\"><span class=\"hidden-480\">下一页</span> → </a>";
+						authorHTML+="</li>&nbsp;";
+					}else{
+						authorHTML+="<li class=\" active\">";
+						authorHTML+="<a><span class=\"hidden-480\">下一页</span> → </a>";
+						authorHTML+="</li>&nbsp;";
+					}
+					authorHTML+="<li><input type=\"text\" id=\"nextpage\" style=\"width:25px;\"></li>&nbsp;";
+					authorHTML+="<li><button class=\"btn btn-primary\" style=\"width:60px;height:30px; margin-top:-10px;\" onclick=\"findcountlist_findcountlist('x97','"+urlxh+"','"+str+"')\">跳转</button></li>&nbsp;";
+					
+					authorHTML+="</ul></div></div></div></div>";
+				}else{
+					authorHTML+="<div style=\"border: 2px solid; border-color:#fafafa; width: 1080px;  height: 700px; background-color: #FFFFFF; float: left;\">";
+					authorHTML+="<div class=\"caption\" style=\"font-size: 24px; background-color: #EEEEEE;text-align:center; padding-top: 8px; padding-bottom: 8px;\">"+name+"排行榜</div>";
+					authorHTML+="<input type=\"text\" name=\"\" id=\"input_findcountlist_ss\" style=\"margin-bottom: -1px;\">";
+					authorHTML+="<button type=\"button\" class=\"btn\" onclick=\"findcountlist_findcountlist('1','"+urlxh+"','"+str+"')\" style=\"color: #0088CC; hiegth:7px;\">检索</button></a>";
+					authorHTML+="<button type=\"button\" onclick=\"index_menuClick('music/musicManage_findcountlist.do')\" class=\"btn\" style=\"color: #0088CC; float: right;\">返回统计</button>";
+					authorHTML+="<table class=\"table\" style=\"border-bottom: 1px solid;border-bottom-color:#DDDDDD;\" id=\"divid_findAuthorphtoplist_old\">";
+					authorHTML+="<tr>";	
+					authorHTML+="<td>序号</td>";
+					if(urlxh==1){
+						authorHTML+="<td>作者姓名</td>";
+					}else if(urlxh==2){
+						authorHTML+="<td>专辑名称</td>";
+					}else{
+						authorHTML+="<td>音乐名称</td>";
+					}
+					authorHTML+="<td><a href=\"#\">关注量</a></td>";
+					authorHTML+="<td><a href=\"#\">收藏量</a></td>";
+					authorHTML+="<td>下载量</td>";
+					authorHTML+="</tr>";
+					authorHTML+="</table>";
+					authorHTML+="<p style=\"color: red;font-size: 25px;text-align: center;\">对不起，没有找到相关数据！</p>";
+				}
+				$("#divid_findcountlist_authormath").html(authorHTML); 
+			}
+		});
+	}
+			
+
+	
+		
+		
+
+</script>
+
+
+
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="row-fluid" >
+		<div class="span12">   
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<h3 class="page-title">
+				音乐管理 <small></small>
+			</h3>
+			<ul class="breadcrumb" >
+				<li>
+					<a href="#">音乐管理</a> 
+					<i class="icon-angle-right"></i>
+				</li>
+				<li>
+					<a href="#">音乐统计</a>
+				</li>
+			</ul>
+			<!-- END PAGE TITLE & BREADCRUMB-->
+		</div>
+	</div>
+	<div id="divid_findcountlist_allph">
+		<div style="border: 2px solid; margin-right:10px; border-color:#fafafa; width: 340px; height: 500px; background-color: #fafafa; float: left;">
+			<div class="caption" style="font-size: 18px; background-color: #DBEAF9; text-align:center; padding-top: 8px;">作者关注排行榜<hr></div>
+			<table>	
+					<s:iterator value="authorpraiselist" id="authorpraisesl" status="a">
+						<tr>
+							<td>
+								<s:if test="#a.index+1==1||#a.index+1==2||#a.index+1==3">
+									<div style="  width: 20px; height: 20px; text-align: center; background-color: #FF6600;  margin-left: 10px;">
+										<s:property value="%{#a.index+1}"/>
+									</div>
+								</s:if>
+								<s:else>
+									<div style="  width: 20px; height: 20px; text-align: center; background-color: #BDBDBD;  margin-left: 10px;">
+										<s:property value="%{#a.index+1}"/>
+									</div>
+								</s:else>
+							</td>
+							<td width="160px;">
+								<p style="margin-top:4px; margin-left: 18px; font-size: 15px;white-space:nowrap; overflow:hidden;text-overflow: ellipsis; width: 150px;">${authorpraisesl.zzxm}</p>
+							</td>
+							<td style="padding-bottom: 8px; ">
+								<div style="margin-left: 10px; float: left;">
+									<img alt="" src="../images/ph.png" style="max-width: 80px;" width="${5+authorpraisesl.zan}">
+									【${authorpraisesl.zan}】
+								</div>
+							</td>
+						</tr>
+					</s:iterator>
+				</table>
+	   				<button type="button" class="btn btn-bule btn-lg btn-block" onclick="findcountlist_findcountlist('1','1','0')">查看作者全部排行榜</button>
+		</div>
+		
+		<div style="border: 2px solid; margin-left:9px; border-color:#fafafa; width: 340px; height: 500px; background-color: #fafafa; float: left;">
+			<div class="caption" style="font-size: 18px; background-color: #DBEAF9; text-align:center; padding-top: 8px;">专辑下载排行榜<hr></div>
+				<s:iterator value="downloadlistzj" id="downlist" status="a">
+					<table>	
+						<tr>
+							<td>
+								<s:if test="#a.index+1==1||#a.index+1==2||#a.index+1==3">
+									<div style="  width: 20px; height: 20px; text-align: center; background-color: #FF6600;  margin-left: 10px;">
+										<s:property value="%{#a.index+1}"/>
+									</div>
+								</s:if>
+								<s:else>
+									<div style="  width: 20px; height: 20px; text-align: center; background-color: #BDBDBD;  margin-left: 10px;">
+										<s:property value="%{#a.index+1}"/>
+									</div>
+								</s:else>
+							</td>
+							<td width="160px;">
+								<p style="margin-top:4px; margin-left: 18px; font-size: 15px;white-space:nowrap; overflow:hidden;text-overflow: ellipsis; width: 150px;">${downlist.zjmc}</p>
+							</td>
+							<td style="padding-bottom: 8px; ">
+								<div style="margin-left: 10px;">
+									<img alt="" src="../images/ph.png" style="max-width: 80px;" width="${5+downlist.xz}">
+									【${downlist.xz}】
+								</div>
+							</td>
+						</tr>
+					</table>
+				</s:iterator>
+					<button type="button" class="btn btn-bule btn-lg btn-block" onclick="findcountlist_findcountlist('1','2','0')">查看专辑全部排行榜</button>
+		</div>
+	
+		<div style="border: 2px solid; margin-left:18px; border-color:#fafafa; width: 340px; height: 500px; background-color: #fafafa; float: left;">
+			<div class="caption" style="font-size: 18px; background-color: #DBEAF9; text-align:center; padding-top: 8px;">单曲下载排行榜<hr></div>
+				<s:iterator value="downloadlist" id="dloadlist" status="a">
+					<table>	
+						<tr class="tr">
+							<td>
+								<s:if test="#a.index+1==1||#a.index+1==2||#a.index+1==3">
+									<div style="  width: 20px; height: 20px; text-align: center; background-color: #FF6600;  margin-left: 10px;">
+										<s:property value="%{#a.index+1}"/>
+									</div>
+								</s:if>
+								<s:else>
+									<div style="  width: 20px; height: 20px; text-align: center; background-color: #BDBDBD;  margin-left: 10px;">
+										<s:property value="%{#a.index+1}"/>
+									</div>
+								</s:else>
+							</td>
+							<td width="160px;">
+								<p style="margin-top:4px; margin-left: 18px; font-size: 15px; white-space:nowrap; overflow:hidden;text-overflow: ellipsis; width: 150px;">${dloadlist.yymc}</p>
+							</td>
+							<td style="padding-bottom: 8px; ">
+								<div style="margin-left: 10px;">
+									<img alt="" src="../images/ph.png" style="max-width: 80px; " width="${5+dloadlist.xz}">
+									【${dloadlist.xz}】 
+								</div>
+							</td>
+						</tr>
+					</table>
+				</s:iterator>
+	   				<button type="button" class="btn btn-bule btn-lg btn-block" onclick="findcountlist_findcountlist('1','3','0')">查看音乐全部排行榜</button>
+		</div>
+	</div>
+	<!--更多排行 -->
+	<div id="divid_findcountlist_authormath"></div>
+<!-- 	<!-- 专辑更多排行 --> 
+<!-- 	<div id="divid_findcountlist_zjmath"></div> -->
+<!-- 	<!-- 音乐更多排行 --> 
+<!-- 	<div id="divid_findcountlist_musicmath"></div> -->
+	
+</div>
+<script src="../themes/admin/metronic_admin/_static/scripts/inbox.js"></script>  
+<script>
+	jQuery(document).ready(function() {       
+	   // initiate layout and plugins
+	   //App.init();
+	   Inbox.init();
+	});
+</script>

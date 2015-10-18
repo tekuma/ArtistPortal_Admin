@@ -1,0 +1,579 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<script>
+	//点击第一级作者分类查询作者
+	function musiclist_findAuthorTypeToAuthor(authorTypeID,authorpelbmc,sftj){//alert(authorTypeID);
+		$("#inputid_musiclist_authorTypeID").val(authorTypeID);
+		$("#inputid_musiclist_authorTypeNAME").val(authorpelbmc);
+		$("#inputid_musiclist_authorID").val("");
+		//var contextPath=document.getElementById("contextPath").value;
+		var autlbmc=encodeURI(encodeURI(authorpelbmc));   
+		//$('#divid_mussiclist_addzz').attr("onclick","openWindow('"+contextPath+"/musicManage_addAuthor.do?gn=add&authorNew.yjflbh="+authorTypeID+"&authorlbmc="+autlbmc+"','作者添加窗口','550','650');");								
+		$(".liclass_musiclist_yjfl").each(function(){
+			$(this).attr("class","liclass_musiclist_yjfl");
+		});
+		$("#liid_musiclist_yjfl"+authorTypeID).attr("class","active liclass_musiclist_yjfl");
+		var tupath=$("#inpid_musiclist_tupPath").val();
+		if(sftj=="0"){
+			//document.getElementById("divid_mussiclist_addzz").style.display="";
+			$.ajax({url:"musicManage_findAuthorTypeToAuthor.do?yjflbh="+authorTypeID,type:"post",
+					async:false,cache:false,dataType:"json",
+					success:function(authorlist){
+						var authorHTML="";
+						var authorEjfl="";
+						if(authorlist!=undefined&&authorlist.length>0){
+							for(var i=0;i<authorlist.length;i++){
+								if(authorEjfl!=authorlist[i].ejfl){  
+									authorHTML+="<h4 class=\"form-section\">"+authorlist[i].ejfl+""; 
+									authorHTML+="<b style=\"float:right\">"; 
+									authorHTML+="<i class=\"icon-edit\" onclick=\"musiclist_updateejfl('"+authorlist[i].bh+"','"+authorlist[i].yjflbh+"')\"></i>&ensp;"; 
+									authorHTML+="<i class=\"icon-trash\" onclick=\"musiclist_confirmejfl('"+authorlist[i].bh+"')\"></i>"; 
+									authorHTML+="</b></h4>"; 
+									authorHTML+="<li class=\"in liclass_musiclist_in\" id=\"liid_musiclist_in"+authorlist[i].bh+"\" "+
+										"style=\"padding-left: 5px;padding-right:5px;\" onclick=\"musiclist_findAuthoridToMusic('"+authorlist[i].bh+"')\" >";
+									if(authorlist[i].txlj!=undefined){
+										authorHTML+="<img class=\"avatar\" alt=\"\" src=\""+(tupath+authorlist[i].txlj)+"\">";
+									}else{
+										authorHTML+="<img class=\"avatar\" alt=\"\" src=\""+tupath+"/haitun.png\" onclick=\"musiclist_findAuthoridToMusic('"+recommendlist[i].zzbh+"')\"/>";
+									}
+									authorHTML+="<div class=\"message\">";
+									authorHTML+="<span class=\"arrow\"></span>";
+									authorHTML+="<a href=\"#\" class=\"name\">"+authorlist[i].zzxm+"";
+									authorHTML+="<b style=\"float:right;display:none;cursor:hand;\" >";
+									authorHTML+="<i class=\"icon-thumbs-up\" onclick=\"musiclist_recommendAuthor('"+authorlist[i].bh+"')\"></i>";
+									//authorHTML+="<i class=\"icon-list-alt\" onclick=\"musiclist_updateAuthor('"+authorlist[i].bh+"')\"></i>";
+									authorHTML+="<i class=\"icon-edit\" onclick=\"musiclist_updateAuthor('"+authorlist[i].bh+"')\"></i>";
+									authorHTML+="<i class=\"icon-trash\" onclick=\"musiclist_confirmAuthor('"+authorlist[i].bh+"')\"></i></b></a>";
+									
+								
+									authorHTML+="<span class=\"body\" style=\"margin-top:15px\"></span>";
+									authorHTML+="</div></li>";
+								}else{
+									authorHTML+="<li class=\"in liclass_musiclist_in\" id=\"liid_musiclist_in"+authorlist[i].bh+"\" "+
+										"style=\"padding-left: 5px;padding-right:5px;\" onclick=\"musiclist_findAuthoridToMusic('"+authorlist[i].bh+"')\" >";
+									if(authorlist[i].txlj!=undefined){
+										authorHTML+="<img class=\"avatar\" alt=\"\" src=\""+(tupath+authorlist[i].txlj)+"\">";
+									}else{
+										authorHTML+="<img class=\"avatar\" alt=\"\" src=\""+tupath+"/haitun.png\" onclick=\"musiclist_findAuthoridToMusic('"+recommendlist[i].zzbh+"')\"/>";
+									}
+									authorHTML+="<div class=\"message\">";
+									authorHTML+="<span class=\"arrow\"></span>";
+									authorHTML+="<a href=\"#\" class=\"name\">"+authorlist[i].zzxm+"";
+									authorHTML+="<b style=\"float:right;display:none;cursor:hand;\" >";
+									authorHTML+="<i class=\"icon-thumbs-up\" onclick=\"musiclist_recommendAuthor('"+authorlist[i].bh+"')\"></i>";
+									//authorHTML+="<i class=\"icon-list-alt\" onclick=\"musiclist_updateAuthor('"+authorlist[i].bh+"')\"></i>";
+									authorHTML+="<i class=\"icon-edit\" onclick=\"musiclist_updateAuthor('"+authorlist[i].bh+"')\"></i>";
+									authorHTML+="<i class=\"icon-trash\" onclick=\"musiclist_confirmAuthor('"+authorlist[i].bh+"')\"></i></b></a>";
+									
+									authorHTML+="<span class=\"body\" style=\"margin-top:15px\"></span>";
+									authorHTML+="</div></li>";
+								}
+								authorEjfl=authorlist[i].ejfl;
+							}
+						}
+						$("#divid_musiclist_author").html(authorHTML);
+						musiclist_authorFunction();
+						//public_loadjscssfile("/WebRoot/js/pintu/script.js","js");
+					}
+			});
+		}else{
+			//document.getElementById("divid_mussiclist_addzz").style.display="none";
+			$.ajax({url:"musicManage_findRecommendlist.do",type:"post",
+					async:false,cache:false,dataType:"json",
+					success:function(recommendlist){
+						var authorHTML="";
+						if(recommendlist!=undefined&&recommendlist.length>0){
+							authorHTML+="<h4 class=\"form-section\">推荐"; 
+							authorHTML+="</b></h4>"; 
+							
+							for(var i=0;i<recommendlist.length;i++){
+								authorHTML+="<li class=\"in liclass_musiclist_in\" id=\"liid_musiclist_in"+recommendlist[i].zzbh+"\" "+
+									"style=\"padding-left: 5px;padding-right:5px;\" onclick=\"musiclist_findAuthoridToMusic('"+recommendlist[i].zzbh+"')\" >";
+								if(recommendlist[i].txlj!=undefined){
+									authorHTML+="<img class=\"avatar\" alt=\"\" src=\""+(tupath+recommendlist[i].txlj)+"\">";
+								}else{
+									authorHTML+="<img class=\"avatar\" alt=\"\" src=\""+tupath+"/haitun.png\" onclick=\"musiclist_findAuthoridToMusic('"+recommendlist[i].zzbh+"')\"/>";
+								}
+								authorHTML+="<div class=\"message\">";
+								authorHTML+="<span class=\"arrow\"></span>";
+								authorHTML+="<a href=\"#\" class=\"name\">"+recommendlist[i].zzxm+"";
+								authorHTML+="<b style=\"float:right;display:none;cursor:hand;\" >";
+								authorHTML+="<i class=\"icon-edit\" onclick=\"musiclist_updaterecommendAuthor('"+recommendlist[i].zzbh+"')\"></i>";
+								authorHTML+="<i class=\"icon-trash\" onclick=\"musiclist_confirmrecommend('"+recommendlist[i].zzbh+"')\"></i></b></a>";
+								
+								authorHTML+="<span class=\"body\" style=\"margin-top:15px\"></span>";
+								authorHTML+="</div></li>";
+							}
+							//public_loadjscssfile("/WebRoot/js/pintu/script.js","js");
+						}else{
+							authorHTML+="<p style=\"text-align: center; color: red;font-size: 15px;padding-top:30px; \">暂无推荐</p>";
+						}
+						$("#divid_musiclist_author").html(authorHTML);
+						musiclist_authorFunction();
+					}
+				});
+		}
+	}
+	
+	
+	//根据作者查询音乐
+	function musiclist_findAuthoridToMusic(authorID){
+		//alert("音乐");
+		//alert(authorID);
+		//document.getElementById("addyyjsp").style.display="";
+		document.getElementById("inputid_musiclist_authorID").value=authorID;
+		$(".liclass_musiclist_in").css("border","0px solid #169EF4");
+		$("#liid_musiclist_in"+authorID).css("border","1px solid #169EF4");
+		//var contextPath=document.getElementById("contextPath").value;
+		//alert(contextPath);
+		$.ajax({url:"musicManage_findAuthoridToMusicList.do?musicNew.zzbh="+authorID,type:"post",
+			async:false,cache:false,
+			success:function(musiclist){
+					var musicHTML="";
+					if(musiclist!=undefined&&musiclist!=""&&musiclist.indexOf("no,")>=0){
+							var musiclistArray=musiclist.split(",");
+							//alert(musiclistArray[1]);
+							//$('#addyyjsp').attr("onclick","openWindow('"+contextPath+"/musicManage_addMusic.do?gn=add&musicNew.zzbh="+musiclistArray[1]+"','音乐添加窗口','500','500');");								
+							musicHTML+="<img src=\"../images/pintu/musicno.png\"/>";
+							musicHTML+="<span >"+"没有数据"+"</span>";	
+					}else{
+						var musicZJMC="";
+						for(var i=0;i<musiclist.length;i++){
+							if(musicZJMC!=musiclist[i].zjmc){
+								musicHTML+="<h4 class=\"form-section\">"+musiclist[i].zjmc;
+								musicHTML+="<b style=\"float:right\">"; 
+								musicHTML+="<i class=\"icon-edit\" onclick=\"musiclist_updatezjmc('"+musiclist[i].bh+"')\"></i>&ensp;"; 
+								musicHTML+="<i class=\"icon-trash\" onclick=\"musiclist_confirmzjmc('"+musiclist[i].bh+"','"+musiclist[i].zzbh+"')\"></i>"; 
+								musicHTML+="</b></h4>";
+								musicHTML+="<li class=\"liclass_musiclist_music\"><i class=\"icon-music\"></i>&ensp;&ensp;<span class=\"sale-info\">"+musiclist[i].yymc+"<i class=\"icon-img-up\"></i></span> ";
+								musicHTML+="<span class=\"sale-num\" style=\"float:right\"><b style=\"display:none;\">";
+								musicHTML+="<i class=\"icon-edit\" onclick=\"musiclist_updateMusic('"+musiclist[i].bh+"')\"></i><i class=\"icon-trash\" onclick=\"musiclist_confirmMusic('"+musiclist[i].bh+"','"+musiclist[i].zzbh+"')\"></i></b>&ensp;&ensp;"+musiclist[i].bfsc+"";
+								musicHTML+="</span></li>";
+								musicZJMC=musiclist[i].zjmc;
+							}else{
+								musicHTML+="<li class=\"liclass_musiclist_music\"><i class=\"icon-music\" ></i>&ensp;&ensp;<span class=\"sale-info\">"+musiclist[i].yymc+"<i class=\"icon-img-up\"></i></span> ";
+								musicHTML+="<span class=\"sale-num\" style=\"float:right\"><b style=\"display:none;\">";
+								musicHTML+="<i class=\"icon-edit\" onclick=\"musiclist_updateMusic('"+musiclist[i].bh+"')\"></i><i class=\"icon-trash\" onclick=\"musiclist_confirmMusic('"+musiclist[i].bh+"','"+musiclist[i].zzbh+"')\"></i></b>&ensp;&ensp;"+musiclist[i].bfsc+"";
+								musicHTML+="</span></li>";
+							}
+								
+							//$('#addyyjsp').attr("onclick","openWindow('"+contextPath+"/musicManage_addMusic.do?gn=add&musicNew.zzbh="+musiclist[i].zzbh+"','音乐添加窗口','500','500');");								
+						}
+					}
+					$("#divid_musiclist_zj").html(musicHTML);	
+					musiclist_musicFunction();
+				}
+			});
+	}
+	
+	//一级分类鼠标放上事件
+	$(".liclass_musiclist_yjfl").mouseover(function(){
+		$(this).find("span").show();
+	});
+	//一级分类鼠标离开事件
+	$(".liclass_musiclist_yjfl").mouseout(function(){
+		$(this).find("span").hide();
+	});
+	//作者功能显示事件
+	function musiclist_authorFunction(){
+		//作者鼠标放上事件
+		$(".liclass_musiclist_in").mouseover(function(){
+			$(this).find("b").show();
+		});
+		//作者分类鼠标离开事件
+		$(".liclass_musiclist_in").mouseout(function(){
+			$(this).find("b").hide();
+		});
+	}
+	musiclist_authorFunction();
+	
+	//专辑功能显示事件
+	function musiclist_musicFunction(){
+		//作者鼠标放上事件
+		$(".liclass_musiclist_music").mouseover(function(){
+			$(this).find("b").show();
+		});
+		//作者分类鼠标离开事件
+		$(".liclass_musiclist_music").mouseout(function(){
+			$(this).find("b").hide();
+		});
+	}
+	
+	
+	//////////功能/////////////
+	//打开添加一级分类窗口
+	function musiclist_addAuthortype(){
+		var openURL="musicManage_addAuthortype.do?gn=add";
+		public_openWindow('添加分类',openURL,'updateYjfl','580','',[{"icon":"icon-save","func":"addauthortype_submit"}]);
+	}
+	//修改一级分类
+	function musiclist_updateYjfl(yjflbh){
+		var openURL="musicManage_updatebyAuthortypebh.do?gn=update&yjflbh="+yjflbh;
+		public_openWindow('修改分类',openURL,'updateYjfl','580','',[{"icon":"icon-save","func":"addauthortype_submit"}]);
+	}
+	//删除一级分类
+	function musiclist_confirmYjfl(yjflbh){
+		public_openConfirm("删除分类","是否进行整个一级分类的删除？","musiclist_deleteYjfl('"+yjflbh+"')");
+	}
+	//删除执行函数
+	function musiclist_deleteYjfl(yjflbh){//alert(yjflbh);
+		var deleteURL="musicManage_deleteAuthortype.do?authortypeNew.bh="+yjflbh;
+		$.ajax({url:deleteURL,cache:false,dataType:"json",
+			success:function(returnJSON){
+				if(returnJSON.returnTYPE=="0"){
+					index_menuClick(public_menuContentURL);
+					public_openAlert('提示',returnJSON.returnMESSAGE,0);
+				}else{
+					public_openAlert('错误',returnJSON.returnMESSAGE,1);
+				}
+				index_menuClick(public_menuContentURL);
+			}
+		});
+	}
+	
+	
+	//打开添加作者窗口
+	function musiclist_addAuthor(){
+		var authorTypeID=$("#inputid_musiclist_authorTypeID").val();
+		var authorpelbmc=$("#inputid_musiclist_authorTypeNAME").val();
+		var authorTypeNAME=encodeURI(encodeURI(authorpelbmc));   
+		var openURL="";
+		//alert(authorTypeID);
+		//alert(authorpelbmc);
+		if(authorTypeID!='1'){
+			openURL="musicManage_addAuthor.do?gn=add&authorNew.yjflbh="+authorTypeID+"&authorlbmc="+authorTypeNAME;
+			public_openWindow('添加作者',openURL,'addAuthor','580','',[{"icon":"icon-save","func":"addauthor_submit"}]);
+		}else{
+			public_openAlert('错误','推荐分类中不能添加作者',1);
+		}
+	}
+
+/* 	//添加作者简介
+	function musiclist_recommendAuthor(zzbh){
+		var openURL="musicManage_addRecommend.do?gn=add&zzbh="+zzbh;
+		public_openWindow('推荐作者',openURL,'recommend','580','',[{"icon":"icon-save","func":"addrecommend_submit"}]);
+	}
+	 */
+	//修改作者
+	function musiclist_updateAuthor(zzbh){
+		var openURL="musicManage_updateauthorbybh.do?gn=update&bh="+zzbh;
+		public_openWindow('修改作者信息',openURL,'addAuthor','580','',[{"icon":"icon-save","func":"addauthor_submit"}]);
+	}
+	//删除作者
+	function musiclist_confirmAuthor(zzbh){
+		public_openConfirm("删除作者","是否进行作者和作者音乐的删除？","musiclist_deleteAuthorbyid('"+zzbh+"')");
+	}
+	//删除执行函数
+	function musiclist_deleteAuthorbyid(zzbh){
+		var deleteURL="musicManage_deleteAuthor.do?authorNew.bh="+zzbh;
+		$.ajax({url:deleteURL,cache:false,dataType:"json",
+			success:function(returnJSON){//alert("ok");
+				if(returnJSON.returnTYPE=="0"){
+					//index_menuClick(public_menuContentURL);
+					var authorTypeID=$("#inputid_musiclist_authorTypeID").val();
+					var authorTypeNAME=$("#inputid_musiclist_authorTypeNAME").val();
+					musiclist_findAuthorTypeToAuthor(authorTypeID,authorTypeNAME,'0');
+					public_openAlert('提示',returnJSON.returnMESSAGE,0);
+				}else{
+					public_openAlert('错误',returnJSON.returnMESSAGE,1);
+				}
+				///index_menuClick(public_menuContentURL);
+			}
+		});
+	}
+	
+	
+	//推荐作者
+	function musiclist_recommendAuthor(zzbh){
+		var openURL="musicManage_addRecommend.do?gn=add&zzbh="+zzbh;
+		public_openWindow('推荐作者',openURL,'recommend','580','',[{"icon":"icon-save","func":"addrecommend_submit"}]);
+	}
+	//修改推荐作者
+	function musiclist_updaterecommendAuthor(zzbh){
+		var openURL="musicManage_updateRecommendbh.do?gn=update&zzbh="+zzbh;
+		public_openWindow('修改作者推荐',openURL,'recommend','580','',[{"icon":"icon-save","func":"addrecommend_submit"}]);
+	}
+	//取消推荐作者
+	function musiclist_confirmrecommend(zzbh){
+		public_openConfirm("取消作者推荐","是否取消作者的推荐？","musiclist_deleterecommend('"+zzbh+"')");
+	}
+	//删除执行函数
+	function musiclist_deleterecommend(zzbh){
+		var deleteURL="musicManage_deleteRecommend.do?recommendNew.bh="+zzbh;
+		$.ajax({url:deleteURL,cache:false,dataType:"json",
+			success:function(returnJSON){//alert("ok");
+				if(returnJSON.returnTYPE=="0"){
+					public_openAlert('提示',returnJSON.returnMESSAGE,0);
+					index_menuClick(public_menuContentURL);
+				}else{
+					public_openAlert('错误',returnJSON.returnMESSAGE,1);
+					index_menuClick(public_menuContentURL);
+				}
+			}
+		});
+	}
+	
+	
+	//打开二级分类修改窗口
+	function musiclist_updateejfl(bh,yjflbh){
+		var openURL="musicManage_updateAuthorejflkk.do?gn=update&bh="+bh+"&yjflbh="+yjflbh;
+		public_openWindow('修改二级分类',openURL,'updateEjfl','480','',[{"icon":"icon-save","func":"updateauthorejfl_submit"}]);
+	}
+	//删除二级分类
+	function musiclist_confirmejfl(zzbh){
+		public_openConfirm("删除二级分类","是否删除二级分类及其下的作者？","musiclist_deleteejfl('"+zzbh+"')");
+	}
+	//删除执行函数
+	function musiclist_deleteejfl(zzbh){
+		var deleteURL="musicManage_deleteAuthorejfl.do?authorNew.bh="+zzbh;
+		$.ajax({url:deleteURL,cache:false,dataType:"json",
+			success:function(returnJSON){//alert("ok");
+				if(returnJSON.returnTYPE=="0"){
+					public_openAlert('提示',returnJSON.returnMESSAGE,0);
+					var authorTypeID=$("#inputid_musiclist_authorTypeID").val();
+					var authorTypeNAME=$("#inputid_musiclist_authorTypeNAME").val();
+					musiclist_findAuthorTypeToAuthor(authorTypeID,authorTypeNAME,'0');
+				}else{
+					public_openAlert('错误',returnJSON.returnMESSAGE,1);
+					
+				}
+			}
+		});
+	}
+	
+	
+	//打开添加音乐窗口
+	function musiclist_addMusic(){
+		var authorID=$("#inputid_musiclist_authorID").val();
+		if(authorID!=""){
+			var openURL="musicManage_addMusic.do?gn=add&musicNew.zzbh="+authorID;
+			public_openWindow('添加音乐',openURL,'addmusic','580','',[{"icon":"icon-save","func":"addmusic_submit"}]);
+		}else{
+			public_openAlert('警告','请选择作者',1);
+		}
+	}
+	//修改音乐
+	function musiclist_updateMusic(bh){
+		var openURL="musicManage_updateMusicbybh.do?gn=update&bh="+bh;
+		public_openWindow('修改音乐',openURL,'addmusic','580','',[{"icon":"icon-save","func":"addmusic_submit"}]);
+	}
+	//删除音乐
+	function musiclist_confirmMusic(bh,zzbh){
+		public_openConfirm("删除音乐","是否删除音乐？","musiclist_deleteMusic('"+bh+"','"+zzbh+"')");
+	}
+	//删除执行函数
+	function musiclist_deleteMusic(bh,zzbh){
+		var deleteURL="musicManage_deleteMusic.do?musicNew.bh="+bh;
+		$.ajax({url:deleteURL,cache:false,dataType:"json",
+			success:function(returnJSON){//alert("ok");
+				if(returnJSON.returnTYPE=="0"){
+					public_openAlert('提示',returnJSON.returnMESSAGE,0);
+					musiclist_findAuthoridToMusic(zzbh);
+				}else{
+					public_openAlert('错误',returnJSON.returnMESSAGE,1);
+					musiclist_findAuthoridToMusic(zzbh);
+				}
+			}
+		});
+	}
+	
+	
+	//打开专辑名称修改窗口
+	function musiclist_updatezjmc(bh){
+		var openURL="musicManage_updateMusiczj.do?gn=update&bh="+bh;
+		public_openWindow('修改专辑名称',openURL,'updatemusiczjmc','480','',[{"icon":"icon-save","func":"updatemusiczjmc_submit"}]);
+	}
+	//删除专辑
+	function musiclist_confirmzjmc(bh,zzbh){
+		public_openConfirm("删除专辑","是否删除整张专辑？","musiclist_deletezjmc('"+bh+"','"+zzbh+"')");
+	}
+	//删除专辑
+	function musiclist_deletezjmc(bh,zzbh){
+		var deleteURL="musicManage_deleteMusiczj.do?musicNew.bh="+bh;
+		//alert(bh);alert(zzbh);
+		$.ajax({url:deleteURL,cache:false,dataType:"json",
+			success:function(returnJSON){//alert("ok");
+				if(returnJSON.returnTYPE=="0"){
+					public_openAlert('提示',returnJSON.returnMESSAGE,0);
+					musiclist_findAuthoridToMusic(zzbh);
+				}else{
+					public_openAlert('错误',returnJSON.returnMESSAGE,1);
+					musiclist_findAuthoridToMusic(zzbh);
+				}
+			}
+		});
+	}
+	
+	
+	
+</script>
+<%-- <input type="hidden" id="contextPath" value="${pageContext.request.contextPath}" /> --%>
+<input type="hidden" id="inpid_musiclist_tupPath" value="${sissionFileSerURL}" />
+
+<input type="hidden" id="inputid_musiclist_authorTypeID" value="1" />
+<input type="hidden" id="inputid_musiclist_authorTypeNAME" value="推荐" />
+
+<input type="hidden" id="inputid_musiclist_authorID" value="" />
+
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="row-fluid">
+		<div class="span12">   
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<h3 class="page-title">
+				音乐管理 <small></small>
+			</h3>
+			<ul class="breadcrumb">
+				<li>
+					<a href="index.html">音乐管理</a> 
+					<i class="icon-angle-right"></i>
+				</li>
+				<li>
+					<a href="#">音乐管理</a>
+				</li>
+			</ul>
+			<!-- END PAGE TITLE & BREADCRUMB-->
+		</div>
+	</div>
+	<div style="float: left;width:20%;margin-right:1%;">
+		
+		<div class="row-fluid inbox" >
+			<div class="portlet box green" style="border-width: 0px">
+				<div class="portlet-title">
+					<div class="caption"><i class="icon-reorder"></i>分类</div>
+					<div class="tools" >
+						<i class="icon-plus"  onclick="musiclist_addAuthortype()"></i>
+						<a href="javascript:;" class="collapse "></a>
+					</div>
+				</div>
+				<div class="portlet-body" >
+					<div style="position: relative; overflow: hidden; width: auto;margin-left:-10px;margin-top:-10px;margin-right: -20px; " class="slimScrollDiv">
+						<div class="scroller" style="overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible="0">
+							<div class="span2" style="width:100%;">
+								<ul class="inbox-nav margin-bottom-10" >
+									<s:iterator value="authortypelist" id="authortypel">
+										<s:if test='#authortypel.lbmc=="推荐"'>
+											<li class="active liclass_musiclist_yjfl" id="liid_musiclist_yjfl${authortypel.bh }" 
+												onclick="musiclist_findAuthorTypeToAuthor('${authortypel.bh }','','1')" >
+												<a class="btn" href="javascript:;" data-title="Sent">
+													<s:property value="#authortypel.lbmc" />
+<%-- 													<span style="float:right;display:none;cursor:hand;" > --%>
+<%-- 														<i class="icon-edit" onclick="musiclist_updateYjfl('${authortypel.bh}')"></i> --%>
+<%-- 														<i class="icon-trash" onclick="musiclist_confirmYjfl('${authortypel.bh}')"></i> --%>
+<%-- 													</span> --%>
+												</a>												
+											</li>
+										</s:if>
+										<s:else>
+											<li class="liclass_musiclist_yjfl"  id="liid_musiclist_yjfl${authortypel.bh }" 
+												onclick="musiclist_findAuthorTypeToAuthor('${authortypel.bh }','${authortypel.lbmc }','0')" >
+												<a class="btn" href="javascript:;" data-title="Sent">
+													<s:property value="#authortypel.lbmc" />
+													<span style="float:right;display:none;">
+														<i class="icon-edit" onclick="musiclist_updateYjfl('${authortypel.bh}')"></i>
+														<i class="icon-trash" onclick="musiclist_confirmYjfl('${authortypel.bh}')"></i>
+													</span>
+												</a>
+											</li>
+										</s:else>
+									</s:iterator>
+									
+									
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+			<!-- <div class="span10">
+				<div class="inbox-header">
+					<h1 class="pull-left">Inbox</h1>
+					<form action="#" class="form-search pull-right">
+						<div class="input-append">
+							<input class="m-wrap" type="text" placeholder="Search Mail">
+							<button class="btn green" type="button">Search</button>
+						</div>
+					</form>
+				</div>
+				<div class="inbox-loading">Loading...</div>
+				<div class="inbox-content"></div>
+			</div> -->
+		</div>
+	</div>
+	
+	<!-- 作者信息 -->
+	<div style="float: left;width:43%;margin-right:1%;">
+		<div class="portlet box green" style="border-width: 0px">
+			<div class="portlet-title">
+				<div class="caption"><i class="icon-user-md"></i>作者信息</div>
+				<div class="tools">
+					<i class="icon-plus" onclick="musiclist_addAuthor()"></i>
+					<a href="javascript:;" class="collapse"></a>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div style="position: relative; overflow: hidden; width: auto;  " class="slimScrollDiv">
+					<div class="scroller" style="overflow: hidden; width: auto; " data-always-visible="1" data-rail-visible="0">
+						<ul class="chats" id="divid_musiclist_author">
+							<h4 class="form-section">推荐</h4>
+							<s:iterator value="recommendlist" id="recommendl">
+								<li class="in liclass_musiclist_in" id="liid_musiclist_in${recommendl.zzbh}" 
+									style="padding-left: 5px;padding-right:5px;" onclick="musiclist_findAuthoridToMusic('${recommendl.zzbh}')">
+									<img class="avatar" alt="" src="${sissionFileSerURL}${recommendl.txlj}">
+									<div class="message" >
+										<span class="arrow"></span>
+										<a href="#" class="name"><s:property value="#recommendl.zzxm" />
+											<b style="float:right;display:none;cursor:hand;" >
+												<i class="icon-edit" onclick="musiclist_updaterecommendAuthor('${recommendl.zzbh}')"></i>
+												<i class="icon-trash" onclick="musiclist_confirmrecommend('${recommendl.zzbh}')"></i>
+											</b>
+										</a>
+										<span class="body" style="margin-top:15px"></span>
+									</div>
+								</li>
+							</s:iterator>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 音乐 -->
+	<div style="float: left;width:35%;">
+		<div class="portlet box green" style="border-width: 0px">
+			<div class="portlet-title">
+				<div class="caption"><i class="icon-headphones"></i>专辑信息</div>
+				<div class="tools">
+						<i class="icon-plus" onclick="musiclist_addMusic()"></i>
+						<a href="javascript:;" class="collapse"></a>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div style="position: relative; overflow: hidden; width: auto;  margin-left:-30px" class="slimScrollDiv">
+					<div class="scroller" style="overflow: hidden; width: auto; " data-always-visible="1" data-rail-visible="0">
+						<div class="span4" style="width:95%">
+							<div class="portlet sale-summary">
+								<div class="portlet-body">
+									<ul class="unstyled" id="divid_musiclist_zj">
+										
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="../themes/admin/metronic_admin/_static/scripts/inbox.js"></script>  
+<script>
+	jQuery(document).ready(function() {       
+	   // initiate layout and plugins
+	   //App.init();
+	   Inbox.init();
+	});
+</script>

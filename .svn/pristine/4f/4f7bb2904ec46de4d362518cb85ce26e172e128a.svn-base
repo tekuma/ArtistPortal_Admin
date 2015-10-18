@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="serverSystem" namespace="/system" extends="serverBase">
+		<action name="*_*" class="{1}Action" method="{2}">
+		   	<!--  音乐管理 -->
+		    <result name="index">/WEB-INF/jsp/index.jsp</result>
+        	<result name="login">/WEB-INF/login.jsp</result>
+		    <result name="findAuthorTypeList">/WEB-INF/jsp/music/musiclist.jsp</result>  
+		    <result name="AddAuthortype">/WEB-INF/jsp/music/addauthortype.jsp</result>
+		    <result name="AddAuthor">/WEB-INF/jsp/music/addauthor.jsp</result>
+		    <result name="AddMusic">/WEB-INF/jsp/music/addmusic.jsp</result>
+		   	<result name="AddRecommend">/WEB-INF/jsp/music/addrecommend.jsp</result>
+		    <result name="updateauthorejflkk">/WEB-INF/jsp/music/updateauthorejfl.jsp</result>
+	  		<result name="updatemusiczjmc">/WEB-INF/jsp/music/updatemusiczjmc.jsp</result>
+		    
+	  		<!-- 音乐统计 -->
+	  		<result name="findcountlist">/WEB-INF/jsp/music/findcountlist.jsp</result>
+	  		<result name="findAuthorphtoplist">/WEB-INF/jsp/music/findAuthorphtoplist.jsp</result>
+	  		<result name="findMusiczjphtoplist">/WEB-INF/jsp/music/findMusiczjphtoplist.jsp</result>
+	  		<result name="findMusicyyphtoplist">/WEB-INF/jsp/music/findMusicyyphtoplist.jsp</result>
+	  		
+	  		
+	  		
+	  		
+	  	</action>
+	</package>
+	
+</struts>
+

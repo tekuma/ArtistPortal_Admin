@@ -1,0 +1,38 @@
+package com.zhhb.system.service;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.zhhb.server.comm.PublicJdbcDao;
+import com.zhhb.system.entity.User;
+
+
+@SuppressWarnings("unchecked")
+@Service(value = "loginService")
+public class LoginService {
+	@Resource
+	private PublicJdbcDao publicJdbcDao;
+	public PublicJdbcDao getPublicJdbcDao() {
+		return publicJdbcDao;
+	}
+	public void setPublicJdbcDao(PublicJdbcDao publicJdbcDao) {
+		this.publicJdbcDao = publicJdbcDao;
+	}
+
+	/***
+	 * 获取用户信息
+	 */
+	public User findUser(User userNew){
+		String sql="select * from sys_user_t where DLMC='"+userNew.getDlmc()+"' and DLMM='"+userNew.getDlmm()+"'";
+		return (User)this.publicJdbcDao.getList(sql,User.class).get(0);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+}

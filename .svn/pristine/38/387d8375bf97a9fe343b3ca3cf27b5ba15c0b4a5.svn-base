@@ -1,0 +1,168 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+
+<div class="row-fluid">
+	<div class="span12">
+		<div class="portlet box green">
+			<div class="portlet-title">
+				<div class="caption"><i class="icon-reorder"></i>标准表单</div>
+				<div class="tools">
+					<a href="javascript:;" class="collapse"></a>
+					<a href="#portlet-config" data-toggle="modal" class="config"></a>
+					<a href="javascript:;" class="reload"></a>
+					<a href="javascript:;" class="remove"></a>
+				</div>
+			</div>
+			
+			<div class="portlet-body form">
+				<!-- BEGIN FORM-->
+				<form action="system/system_getFormData.do" class="form-horizontal" id="formid_form_form">
+					<div class="control-group">
+						<label class="control-label">普通输入框：<span class="required">*</span></label>
+						<div class="controls">
+							<input class="span6 m-wrap" type="text" name="demoFormNew.form1" value="" required />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">只读输入框：<span class="required">*</span></label>
+						<div class="controls">
+							<input class="span6 m-wrap" placeholder="只读输入框" readonly="readonly" type="text" name="demoFormNew.form2" value="只读框" />
+							
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">日期输入框：<span class="required">*</span></label>
+						<div class="controls">
+							<input class="m-wrap m-ctrl-medium date-picker" readonly="" size="16" type="text" name="demoFormNew.form3" value="2015-06-01" />
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">下拉框：<span class="required">*</span></label>
+						<div class="controls">
+							<select class="span6 m-wrap" data-placeholder="Choose a Category" tabindex="1" name="demoFormNew.form4" required>
+								<option value=""></option>
+								<option value="Category1">Category 1</option>
+								<option value="Category2">Category 2</option>
+								<option value="Category3">Category 5</option>
+								<option value="Category4">Category 4</option>
+							</select>
+						</div>
+					</div>
+					
+					
+					<div class="control-group">
+						<label class="control-label">单选按钮：</label>
+						<div class="controls">
+							<label class="radio">
+							<input name="demoFormNew.form5" value="1" type="radio">
+							Option 1
+							</label>&ensp;&ensp;&ensp;
+							
+							<label class="radio">
+							<input name="demoFormNew.form5" value="2" checked="" type="radio">
+							Option 2
+							</label>&ensp;&ensp;&ensp;
+							
+							<label class="radio">
+							<input name="demoFormNew.form5" value="3" type="radio" >
+							Option 3
+							</label>  
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">复选按钮：</label>
+						<div class="controls">
+							<label class="checkbox">
+							<input name="demoFormNew.form6" value="1" type="checkbox"> Checkbox 1
+							</label>&ensp;&ensp;&ensp;
+							<label class="checkbox">
+							<input name="demoFormNew.form6" value="2" type="checkbox"> Checkbox 2
+							</label>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">选择文件：</label>
+						<div class="controls">
+							<div class="fileupload fileupload-new" data-provides="fileupload"><input type="hidden">
+								<div class="input-append">
+									<div class="uneditable-input">
+										<i class="icon-file fileupload-exists"></i> 
+										<span class="fileupload-preview"></span>
+									</div>
+									<span class="btn btn-file">
+									<span class="fileupload-new">请选择..</span>
+									<span class="fileupload-exists">修改文件..</span>
+									<input class="default" type="file" name="" >
+									</span>
+									<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">删除</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">选择图像文件：</label>
+						<div class="controls">
+							<div class="fileupload fileupload-new" data-provides="fileupload">
+								<div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
+									<img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="">
+								</div>
+								<div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
+								<div>
+									<span class="btn btn-file"><span class="fileupload-new">请选择..</span>
+									<span class="fileupload-exists">修改图像..</span>
+									<input class="default" type="file" name="filename" /></span>
+									<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">删除</a>
+								</div>
+							</div>
+							<span class="label label-important">注!</span>
+							<span>
+							附加图片缩略图，只支持Firefox、Chrome,Opera,Safari和ie 10
+							</span>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">文本框：</label>
+						<div class="controls">
+							<textarea class="span6 m-wrap" rows="3" name="demoFormNew.form7"  required></textarea>
+						</div>
+					</div>
+					
+					<div class="form-actions">
+						<button type="button" class="btn green" onclick="form_submit()">提交</button>
+						<button type="button" class="btn">取消</button>     
+					</div>
+				</form>
+				<!-- END FORM-->  
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 表单控件必用 -->
+<script type="text/javascript" src="../plugins/select2/select2.min.js"></script>
+<script type="text/javascript" src="../plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="../plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="../plugins/jquery-inputmask/jquery.inputmask.bundle.min.js"></script>   
+<script type="text/javascript" src="../plugins/jquery.input-ip-address-control-1.0.min.js"></script>
+<script type="text/javascript" src="../plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+<script type="text/javascript" src="../themes/admin/metronic_admin/_static/scripts/form-components.js"></script> 
+<script type="text/javascript" src="../plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>  
+<script>
+	jQuery(document).ready(function() {          
+	   // initiate layout and plugins
+	   //App.init();
+	   FormComponents.init();
+	});
+	//表单提交
+	function form_submit(){
+		public_formSubmit($("#formid_form_form"),function(returnJSON){
+			public_openAlert('提示','表单提交成功',0);
+		});
+		
+	}
+</script>

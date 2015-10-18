@@ -1,0 +1,487 @@
+@charset "utf-8";
+/* CSS Document */
+//栅格化标签默认样式
+body{
+	margin:0;
+	padding:0;	
+ 
+	}
+*{
+	margin:0;
+	padding:0;
+	font:14px 微软雅黑;
+    color:#2B2B2B;
+	text-decoration:none;
+	list-style:none;
+	}
+a{
+	
+	}
+//这本是版心的样式 
+
+
+.header{
+	width:100%;
+	height:70px;
+	}
+.banxin{
+	width:1000px;
+	margin:0 auto;
+ 
+	}
+.tool{
+		height:70px;
+		line-height:78px;
+	}
+#logo{
+	float:left;
+	width:85px;
+	height:70px;
+	background:url(../images/Logo.png) no-repeat left center;
+	background-size:contain;
+	}
+.span1{
+	font-size:24px;
+	}
+.span2{
+	font-size:18px;
+	}
+.div1{
+	line-height:70px;
+	float:right;
+	}
+.div2{
+		line-height:70px;
+		float:right;
+	margin-left:10px;
+	}
+ 
+.div11{
+	margin-top:26px;
+	float:left;
+	margin-right:3px;
+	width:16px;
+	height:16px;
+	
+	}
+.div111{
+		background:url(../images/yonghu.png);
+		background-size:contain;
+	}
+.div222{
+	background:url(../images/zhuxiao.png);
+	background-size:contain;
+	}
+.nav{
+	 width:100%;
+	 height:45px;
+	 background:#f98d00;
+	}
+nav.ul{
+	height:45px;
+	}
+.nav ul a:hover{
+	background:#d17600;
+	}
+.nav ul a{
+	line-height:45px;
+	float:left;
+	height:45px;
+	padding-left:10px;
+	padding-right:10px;
+	color:#FFFFFF;
+	}
+.nav .cjn{
+	float:right;
+	background:#ffa530;
+	}
+ 
+.cantent .pp{
+	margin-top:20px;
+	font-size:18px;
+	text-indent:10px;
+	}
+.line{
+	width:100%;
+	height:1px;
+	background:#949494;
+	}
+.dds p{
+	text-indent:10px;
+	 margin-top:10px;
+	}
+	.dds .fk{
+	 
+		padding-top:10px;
+		 
+		overflow:hidden;
+		}
+	.dds .fk p{
+		line-height:20px;
+		float:left;
+		}
+	.fk>div{
+		margin-left:5px;
+		margin-top:10px;
+		float:left;
+		width:20px;
+		height:20px;
+ 
+		}
+	.fk div .mm{
+	 
+		width:9px;
+		height:9px;
+		float:left;
+	 
+		}
+		.fk div .ll{
+			margin-right:2px;
+			}
+		.fk div .lx{
+			margin-bottom:2px;
+			}
+			
+			
+		/*颜色样式*/
+		.c1{
+			background:#0bc4fa;
+			}	
+		.c2{
+			background:#f004ae;
+			}	
+		.c3{
+			background:#f7ff00;
+			}	
+		.c4{
+			background:#080009;
+			}	
+		
+		.b1{
+			background:#ffffff;
+			border:1px solid #E1E1E1;
+			width:18px;
+			height:18px;
+			}
+	    .b2{
+			background:#cccccc;
+			}
+	    .b3{
+			background:#666666;
+			}
+		.b4{
+			background:#000000;
+			}
+		.b5{
+			background:#a26103;
+			}
+		 .b6{
+			background:#f69f00;
+			}
+			
+		.b7{
+			background:#fecb9c;
+			}
+			
+		.b8{
+			background:#fffe00;
+			}
+			
+		.b9{
+			background:#cefd00;
+			}
+			
+		.b10{
+			background:#94d12c;
+			}
+			
+		.b11{
+			background:#06c808;
+			}
+			
+		.b12{
+			background:#22ffc5;
+			}
+			
+		.b13{
+			background:#06c4f6;
+			}
+			
+		.b14{
+			background:#0282f0;
+			}
+			
+		.b15{
+			background:#8500f9;
+			}
+			
+		.b16{
+			background:#d600ff;
+			}
+	    .b17{
+			background:#ff009a;
+			}
+		.b18{
+			background:#0fa0202;
+			}
+			
+			
+.dds p{
+	 
+	 margin-top:10px;
+	 margin-right:10px;
+	}
+.dds select{
+	width:180px;
+	
+	}
+ .dds select option{
+	 text-align:center;
+	 }
+
+
+	
+	
+	
+.pz a{
+	margin-left:5px;
+	margin-right:5px;
+	}
+.lm{
+	float:right;
+	width:60px;
+	height:25px;
+	background:#ff9000;
+	border:none;
+	outline:none;
+	color:#FFFFFF;
+	}
+.ps{
+	margin-left:10px;
+	margin-top:10px;
+	overflow:auto;
+	}
+.ps span{
+	float:left;
+	}
+.ps .tex1{
+	float:left;
+	margin-left:10px;
+	padding-left:2px;
+	outline:0;
+	height:22px;
+	width:200px;
+	font-size:12px;
+	border:1px solid #8A8A8A;
+	border-right:0;
+	}
+.ps .btn{
+	float:left;
+	border:0;
+	outline:none;
+	width:60px;
+	height:24px;
+	background:url(../images/seach.png) no-repeat;
+	background-size:contain;
+	}
+.line1{
+	border:1px dashed #868686;
+	margin-top:20px;
+	margin-bottom:20px;
+	}
+.imgbox{
+	margin:0 auto;
+	border:1px solid red;
+	width:100px;
+	height:100px;
+	line-height:100px;
+	 
+	}
+.jecbox{
+	margin:0 auto;
+	height:100px;
+	width:100px;
+	}
+.jecbox img{
+	width:100%;
+	height:100%;
+	vertical-align:bottom;
+	}
+.divbox{
+	
+	width:142px;
+	height:142px;
+	float:left;
+	 
+	}
+.hehe{
+	width:142px;
+	height:160px;
+	float:left;
+}
+.hehe p{
+	text-align:center;
+	line-height:15px;
+		}
+.jianjv{
+	margin-left:300px;
+	}
+.jianjv1{
+	margin-left:308px;
+	}
+.divbox p{
+	text-align:center;
+	line-height:20px;
+	}
+.fenye{
+	
+	width:350px;
+	height:40px;
+ 
+	margin: 0 auto;
+	}
+.nb{
+	overflow:hidden;
+	}
+.anniu1{
+	color:#FFFFFF;
+	width:80px;
+	height:25px;
+	border:none;
+	background:#ff9000;
+	outline:none;
+	}
+.anniu{
+	float:right;
+	}
+.go{
+	color:#FFFFFF;
+	width:50px;
+	height:25px;
+		border:none;
+	background:#252525;
+	outline:none;
+	float:right;
+	margin-right:15px;
+	}
+.fenye input{
+	width:40px;
+	outline:none;
+	margin-left:66px;
+ 
+	}
+	
+	
+	
+
+
+.wenjianxinxi{
+	margin-top:10px;
+	overflow:hidden;
+	}
+.wj{
+	float:left;
+	width:400px;
+	 
+	}
+.wj1{
+	float:left;
+	width:600px;
+	 
+	}
+.wj1 .jb{
+	 
+	overflow:auto;
+	}
+.wj1 .jb p .aya{
+	margin-left:10px;
+	}
+ .wj1 .jb p{
+ border:1px solid red;
+	 
+ 
+	 }
+.wj1 div{
+	overflow:hidden;
+	}
+.wj1 div div{
+	line-height:25px;
+	float:left;
+	height:25px;
+	}
+.wj1 div .cf{
+	margin-left:20px;
+	display:inline-block;
+	height:25px;
+	width:60px;
+	background:url(../images/Add-to.png) no-repeat center center;
+	background-size:contain;
+	}
+ .wj1 div .jc{
+	 margin-top:5px;
+	 margin-left:30px;
+	 float:right;
+	 width:15px;
+	 height:15px;
+	 background:url(../images/lajitong.png);
+	 background-size:contain;
+	 
+	 }
+.wj1 div .jj{
+		 margin-top:5px;
+	 margin-left:30px;
+	 float:right;
+	 width:15px;
+	 height:15px;
+	 background:url(../images/bi.png);
+	 background-size:contain;
+	}
+	 
+.wjleftleft1{
+	float:left;
+	width:120px;
+	height:100px;
+	 
+	}
+.wjleftleft{
+		float:left;
+	width:120px;
+	height:120px;
+	}
+.wjleftleft1 img{
+	width:100%;
+	}
+.wjleftleft img{
+	width:100%;
+	}
+.wjleftright p{
+	line-height:30px;
+	text-indent:10px;
+	}
+.jiazai{
+	font-size:12px;
+	width:80px;
+	height:20px;
+	background:#ff9000;
+	border:none;
+	clear:both;
+	outline:none;
+	color:#FFFFFF;
+	}
+ .lineny{
+	 width:100%;
+	 height:1px;
+	 background:#949494;
+	 margin-top:10px;
+	 margin-bottom:10px;
+	 }
+	.text{
+		width:500px;
+		height:100px;
+		border:1px solid #949494;
+		}
+	.kill{
+		margin-top:20px;
+		}
+ 
+	

@@ -1,0 +1,80 @@
+package com.zhhb.system.entity;
+
+import java.util.Date;
+
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Valuate extends BaseEntity {
+	
+	private Integer bh;//编号
+	private Date pjsj;//评价时间
+	private Integer hybh;//会员编号
+	private String hync;//会员昵称
+	private String pjnr;//评价内容
+	private Integer shtg;//是否审核通过
+	private Date shsj;//审核时间
+	private String shry;//审核人员
+	private Integer zzbh;//作者编号
+	
+	
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public Date getPjsj() {
+		return pjsj;
+	}
+	public void setPjsj(Date pjsj) {
+		this.pjsj = pjsj;
+	}
+	public Integer getHybh() {
+		return hybh;
+	}
+	public void setHybh(Integer hybh) {
+		this.hybh = hybh;
+	}
+	public String getHync() {
+		return hync;
+	}
+	public void setHync(String hync) {
+		this.hync = hync;
+	}
+	public String getPjnr() {
+		return pjnr;
+	}
+	public void setPjnr(String pjnr) {
+		this.pjnr = pjnr;
+	}
+	public Integer getShtg() {
+		return shtg;
+	}
+	public void setShtg(Integer shtg) {
+		this.shtg = shtg;
+	}
+	public Date getShsj() {
+		return shsj;
+	}
+	public void setShsj(Date shsj) {
+		this.shsj = shsj;
+	}
+	public String getShry() {
+		return shry;
+	}
+	public void setShry(String shry) {
+		this.shry = shry;
+	}
+	public Integer getZzbh() {
+		return zzbh;
+	}
+	public void setZzbh(Integer zzbh) {
+		this.zzbh = zzbh;
+	}
+	
+	
+	
+	
+	
+}

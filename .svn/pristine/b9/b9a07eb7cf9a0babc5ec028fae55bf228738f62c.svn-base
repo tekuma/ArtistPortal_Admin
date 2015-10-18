@@ -1,0 +1,103 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+
+
+<script>
+function bijiao() {
+	var kssj=document.getElementById("txtDate").value;
+	var jssj=document.getElementById("txtDate2").value;
+	var myDate = new Date();
+    var n=myDate.getFullYear();
+	var yy=myDate.getMonth()+1; 
+	if(yy>=10){
+		var y=yy;
+	}else{
+		var y="0"+yy
+	}
+	var r=myDate.getDate();
+	var dqsj=n+"-"+y+"-"+r;
+	if(jssj!=undefined&&jssj!=null&&jssj.length>0){
+		if(kssj>=jssj){
+			alert("开始时间必须小于结束时间");
+			return false;
+		}else{
+			if(jssj>dqsj){
+				return true;
+			}else{
+				alert("结束时间必须大于当前时间");
+				return true;
+			}
+		}
+	}
+}
+
+	//表单提交
+	function addrecommend_submit(){
+		//alert();
+		public_formSubmit($("#formid_addrecommend_form"),function(returnJSON){
+			//alert(returnJSON.returnTYPE);
+			if(returnJSON.returnTYPE=="0"){
+				//alert(returnJSON.returnDATA);
+				public_openAlert('提示',returnJSON.returnMESSAGE,0);
+				index_menuClick(public_menuContentURL);
+			}else{
+				public_openAlert('错误',returnJSON.returnMESSAGE,1);
+				index_menuClick(public_menuContentURL);
+			}
+			public_closeWindow('recommend');
+		});
+	}
+
+</script>
+
+
+	<form id="formid_addrecommend_form" action="musicManage_RecommendSkip.do" class="form-horizontal">
+		<input type="hidden" name="recommendNew.bh" value="${recommendNew.bh }">
+		<input type="hidden"  name="gn" value="${gn}">
+		<div class="control-group">
+			<label class="control-label">作者</label>
+			<div class="controls">
+				<input type="text" readonly="readonly" placeholder="必填项" name="recommendNew.zzxm " id="username1_input" value="${recommendNew.zzxm }">
+				<input type="hidden"  name="recommendNew.zzbh " id="username1_input" value="${recommendNew.bh }">
+			
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">推荐开始时间<span class="required">*</span></label>
+			<div class="controls">
+				<input class="m-wrap m-ctrl-medium date-picker" required="" size="16" type="text" name="recommendNew.kssj"
+				placeholder="必填项,如：2015-05-25" id="txtDate"  value='<s:date name="recommendNew.kssj" format="yyyy-MM-dd" />' />
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">推荐结束时间<span class="required">*</span></label>
+			<div class="controls">
+				<input class="m-wrap m-ctrl-medium date-picker" required="required" size="16" type="text" name="recommendNew.jssj"
+				placeholder="必填项,如：2015-05-25" id="txtDate2"  value='<s:date name="recommendNew.jssj" format="yyyy-MM-dd" />' />
+			</div>
+		</div>
+		
+		<div class="form-actions">
+			<button type="button" class="btn green" onclick="addrecommend_submit()" onmousemove="bijiao()"><i class="icon-ok"></i>保存</button>
+			<button type="button" onclick="public_closeWindow('recommend')" class="btn">取消</button>     
+		</div>
+	</form>
+	
+<script type="text/javascript" src="../plugins/select2/select2.min.js"></script>
+<script type="text/javascript" src="../plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="../plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="../plugins/jquery-inputmask/jquery.inputmask.bundle.min.js"></script>   
+<script type="text/javascript" src="../plugins/jquery.input-ip-address-control-1.0.min.js"></script>
+<script type="text/javascript" src="../plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+<script type="text/javascript" src="../themes/admin/metronic_admin/_static/scripts/form-components.js"></script> 
+<script type="text/javascript" src="../plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script> 
+<script>
+	jQuery(document).ready(function() {          
+	   // initiate layout and plugins
+	   //App.init();
+	   FormComponents.init();
+	});
+</script>
+

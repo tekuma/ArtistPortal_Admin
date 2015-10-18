@@ -1,0 +1,43 @@
+package com.zhhb.system.entity;
+
+
+import java.util.Date;
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Param extends BaseEntity {
+	
+	private Integer bh;//编号
+	private String csmc;//参数名称
+	private String csz;//参数值
+	private String bz;//备注
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public String getCsmc() {
+		return csmc;
+	}
+	public void setCsmc(String csmc) {
+		this.csmc = csmc;
+	}
+	public String getCsz() {
+		return csz;
+	}
+	public void setCsz(String csz) {
+		this.csz = csz;
+	}
+	public String getBz() {
+		return bz;
+	}
+	public void setBz(String bz) {
+		this.bz = bz;
+	}
+	
+	
+	
+	
+	
+}

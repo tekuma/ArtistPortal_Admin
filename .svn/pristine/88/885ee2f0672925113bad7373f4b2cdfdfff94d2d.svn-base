@@ -1,0 +1,636 @@
+package com.zhhb.system.service;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+
+import org.springframework.stereotype.Service;
+
+import com.google.zxing.common.BitMatrix;
+import com.pintu.pub.page.PageResult;
+import com.zhhb.server.comm.PublicJdbcDao;
+import com.zhhb.system.entity.Author;
+import com.zhhb.system.entity.Authorpraise;
+import com.zhhb.system.entity.Authortype;
+import com.zhhb.system.entity.Download;
+import com.zhhb.system.entity.Music;
+import com.zhhb.system.entity.Recommend;
+
+
+@SuppressWarnings("unchecked")
+@Service(value = "musicManageService")
+public class MusicManageService {
+	@Resource
+	private PublicJdbcDao psychologyJdbcDao;
+	
+	public PublicJdbcDao getPsychologyJdbcDao() {
+		return psychologyJdbcDao;
+	}
+
+	public void setPsychologyJdbcDao(PublicJdbcDao psychologyJdbcDao) {
+		this.psychologyJdbcDao = psychologyJdbcDao;
+	}
+	
+	
+	/**
+	 * 查询音乐首页导航作者一级分类
+	 * @return
+	 */
+	public List<Authortype> findAuthorTypeList(){
+		String sql="select * from mus_authortype_t";
+		return this.psychologyJdbcDao.getList(sql,Authortype.class);
+	}
+	/**
+	 * 根据作者一级分类查询作者
+	 * */
+	public List<Author> findAuthorTypeToAuthor(int yjflbh){
+		String sql="select * from mus_author_t where yjflbh="+yjflbh+" order by ejflxh";
+		return this.psychologyJdbcDao.getList(sql,Author.class);
+	}
+	/**
+	 * 查询音乐首页推荐导航
+	 * @return
+	 */
+	public List<Recommend> findRecommendlist(){
+		String sql="select t1.*,t2.txlj from mus_recommend_t t1,mus_author_t t2 "
+				+ "where t1.kssj=curdate() and t1.jssj>=curdate() and t1.zzbh=t2.bh";
+		return this.psychologyJdbcDao.getList(sql, Recommend.class);
+	}
+
+	
+	/**
+	 * 添加一级类别信息
+	 * @param authortypeNew
+	 * @return
+	 */
+	public int saveAuthortype(Authortype authortypeNew){
+		String sql="select count(1) from mus_authortype_t where lbmc='"+authortypeNew.getLbmc()+"'";
+		int count=this.psychologyJdbcDao.getTempInt(sql, 0);
+		if(count>0){
+			return 1;
+		}else{
+			return this.psychologyJdbcDao.executeMYSQLDB("save", "mus_authortype_t", authortypeNew, "");
+		}
+	}
+	/**
+	 * 修改一级类别信息
+	 * @param authortypeNew
+	 * @return
+	 */
+	public int updateAuthortype(Authortype authortypeNew){
+		String sql="select count(1) from mus_authortype_t where lbmc='"+authortypeNew.getLbmc()+"'";
+		int count=this.psychologyJdbcDao.getTempInt(sql, 0);
+		if(count>0){
+			return 1;
+		}else{
+			return this.psychologyJdbcDao.executeMYSQLDB("update", "mus_authortype_t", authortypeNew, "bh");
+		}
+	}
+	/**
+	 * 删除一级类别信息
+	 * @param ahtArray
+	 * @return
+	 */
+	public int deleteAuthortype(Authortype authortypeNew){
+		if(this.getPsychologyJdbcDao().executeSQL("DELETE from mus_author_t where yjflbh="+authortypeNew.getBh()+"")){
+			return this.psychologyJdbcDao.executeMYSQLDB("delete", "mus_authortype_t", authortypeNew, "bh");
+		}else{
+			return 1;
+		}
+	}
+	
+	
+	/**
+	 * 修改二级分类名称
+	 * @param xjnr
+	 * @return
+	 */
+	public int updateAuthorejfl(Author authorNew,String ejflmc){
+		if(this.getPsychologyJdbcDao().executeSQL("update mus_author_t set ejfl='"+authorNew.getEjfl()+"' where ejfl='"+ejflmc+"'")){
+			return 0;
+		}else{
+			return 1;
+		}
+	}
+	/**
+	 * 删除二级分类
+	 * @param bhArray
+	 * @return
+	 */
+	public int deleteAuthorejfl(Author author){
+		if(this.getPsychologyJdbcDao().executeSQL("DELETE from mus_author_t where ejfl='"+author.getEjfl()+"' and yjflbh="+author.getYjflbh())){
+				if(this.getPsychologyJdbcDao().executeSQL("DELETE from mus_music_t where zzbh="+author.getBh()) && this.getPsychologyJdbcDao().executeSQL("DELETE from mus_authordetail_t where zzbh="+author.getBh())){
+					return this.psychologyJdbcDao.executeMYSQLDB("delete", "mus_recommend_t", author, "bh");
+				}else{
+					return 1;
+				}
+		}else{
+			return 1;
+		}
+	}
+	
+	
+	
+	/**
+	 * 查询出所有一级分类
+	 * @return
+	 */
+	public List<Authortype> findAuthortypelist(){
+		String sql="select * from mus_authortype_t where lbmc<>'推荐'";
+		return this.psychologyJdbcDao.getList(sql,Authortype.class);
+	}
+	/**
+	 * 查询出所有二级分类
+	 * @return
+	 */
+	public List<Author> findAuthorejfl(){
+		String sql="select distinct ejfl from mus_author_t where ejfl is not null and ejfl != '' ";
+		return this.psychologyJdbcDao.getList(sql,Author.class);
+	}
+	/**
+	 * 根据一级分类查询出所有二级分类
+	 * @return
+	 */
+	public List<Author> findAuthorbyejfl(Author authorNew){
+		String sql="select distinct ejfl from mus_author_t where yjflbh='"+authorNew.getYjflbh()+"'";
+		return this.psychologyJdbcDao.getList(sql,Author.class);
+	}
+	/**
+	 * 添加作者信息
+	 * @param authortypeNew
+	 * @return
+	 */
+	public int saveAuthor(Author authorNew){
+		String sql="select count(1) from mus_author_t where zzxm='"+authorNew.getZzxm()+"' and ejfl='"+authorNew.getEjfl()+"'";
+		int count=this.psychologyJdbcDao.getTempInt(sql, 0);
+		if(count>0){
+			return 1;
+		}else{
+			return this.psychologyJdbcDao.executeMYSQLDB("save", "mus_author_t", authorNew, "");
+		}
+	}
+	/**
+	 * 修改作者信息
+	 * @param authortypeNew
+	 * @return
+	 */
+	public int updateAuthor(Author authorNew){
+		String sql="select count(1) from mus_author_t where bh<>'"+authorNew.getBh()+"' and zzxm='"+authorNew.getZzxm()+"' and ejfl='"+authorNew.getEjfl()+"'";
+		int count=this.psychologyJdbcDao.getTempInt(sql, 0);
+		if(count>0){
+			return 1;
+		}else{
+			if(this.getPsychologyJdbcDao().executeSQL("update mus_recommend_t set zzxm='"+authorNew.getZzxm()+"' where zzbh="+"'"+authorNew.getBh()+"'")){
+				if(this.getPsychologyJdbcDao().executeSQL("update mus_share_t set zzxm='"+authorNew.getZzxm()+"' where zzbh="+"'"+authorNew.getBh()+"'")){
+					return this.psychologyJdbcDao.executeMYSQLDB("update", "mus_author_t", authorNew, "bh");
+				}else{
+					return 1;
+				}
+			}else{
+				return 1;
+			}
+		}
+	}
+	
+	/**
+	 * 删除作者信息
+	 * @param ahtArray
+	 * @return
+	 */
+	public int deleteAuthor(Author authorNew){
+	if(this.getPsychologyJdbcDao().executeSQL("DELETE from mus_music_t where zzbh='"+authorNew.getBh()+"'") && this.getPsychologyJdbcDao().executeSQL("DELETE from mus_authordetail_t where zzbh="+authorNew.getBh())){
+		if(this.getPsychologyJdbcDao().executeSQL("DELETE from mus_recommend_t where zzbh='"+authorNew.getBh()+"'")){
+				if(this.getPsychologyJdbcDao().executeSQL("DELETE from mus_share_t where zzbh='"+authorNew.getBh()+"'")){
+					return this.psychologyJdbcDao.executeMYSQLDB("delete", "mus_author_t", authorNew, "bh");
+				}else{
+					return 1;
+				}
+			}else{
+				return 1;
+			}
+	}else{
+		return 2;
+	}
+}
+	
+	/**
+	 * 移除头像，重新添加
+	 * @param authorNew
+	 * @return
+	 */
+	@SuppressWarnings("unused")
+	public boolean updateAuthortxlj(Author authorNew,String tp){
+		if(tp.equals("tx")){
+			String sql="update mus_author_t set txlj='' where bh="+authorNew.getBh();
+			boolean count=this.psychologyJdbcDao.executeSQL(sql);
+		}
+		if(tp.equals("bj")){
+			String sql="update mus_author_t set bjtplj='' where bh="+authorNew.getBh();
+			boolean count=this.psychologyJdbcDao.executeSQL(sql);
+		}
+		return true;
+	}
+	
+
+	
+	
+	/**
+	 * 根据作者编号查询出作者的音乐信息
+	 */
+	public List<Music> findAuthoridToMusicList(Music musicNew){
+//		String sql="select t2.bh,t2.zjmc,t2.zzbh,GROUP_CONCAT(t2.yymc ORDER BY t2.yymc) as yymc "
+//					+ "from mus_author_t t1,mus_music_t t2 "
+//					+ "where t1.bh=t2.zzbh and t1.bh='"+musicNew.getZzbh()+"' GROUP BY t2.zjmc ORDER BY t2.zjmc";
+		String sql="select t2.bh,t2.zjmc,t2.zzbh,t2.yymc,t2.bfsc,cast(t2.zjpx as char) zjpx,cast(t2.yypx as char) yypx "
+					+ "from mus_author_t t1,mus_music_t t2 "
+					+ "where t1.bh=t2.zzbh and t2.zzbh='"+musicNew.getZzbh()+"' ORDER BY t2.zjpx,t2.yypx,t2.bh,t2.zjmc  ";
+		List<Music> musiclist=this.psychologyJdbcDao.getList(sql,Music.class);
+		
+		return musiclist;
+	}
+	
+	
+	
+	
+	
+	/**
+	 * 查询出所有作者信息
+	 * @return
+	 */
+	public List<Author> findauthorlist(){
+		String sql="select * from mus_author_t";
+		return this.psychologyJdbcDao.getList(sql,Author.class);
+	}
+	/**
+	 * 根据作者编号查询出专辑名称
+	 * @param musicNew
+	 * @return
+	 */
+	public List<Music> findAuthorandMusic(Music musicNew){
+		String sql="select distinct zjmc,zzbh from mus_music_t where zzbh="+musicNew.getZzbh();
+		return this.psychologyJdbcDao.getList(sql,Music.class);
+	}
+	/**
+	 * 添加音乐信息
+	 * @param authortypeNew
+	 * @return
+	 */
+	public int saveMusic(Music musicNew){
+		String sql="select count(1) from mus_music_t where yymc='"+musicNew.getYymc()+"' and zzbh="+musicNew.getZzbh()+" and zjmc='"+musicNew.getZjmc()+"'";
+		int count=this.psychologyJdbcDao.getTempInt(sql, 0);
+		if(count>0){
+			return 1;
+		}else{
+			return this.psychologyJdbcDao.executeMYSQLDB("save", "mus_music_t", musicNew, "");
+		}
+	}
+	/**
+	 * 修改音乐信息
+	 * @param authortypeNew
+	 * @return
+	 */
+	public int updateMusic(Music musicNew){
+		String sql="select count(1) from mus_music_t where bh<>'"+musicNew.getBh()+"' and yymc="+"'"+musicNew.getYymc()+"'";
+		int count=this.psychologyJdbcDao.getTempInt(sql, 0);
+		if(count>0){
+			return 1;
+		}else{
+			return this.psychologyJdbcDao.executeMYSQLDB("update", "mus_music_t", musicNew, "bh");
+		}
+	}
+	/**
+	 * 删除音乐信息
+	 * @param ahtArray
+	 * @return
+	 */
+	public int deleteMusic(Music musicNew){
+		return this.psychologyJdbcDao.executeMYSQLDB("delete", "mus_music_t", musicNew, "bh");
+	}
+	
+	/**
+	 * 移除音乐，重新添加
+	 * @param authorNew
+	 * @return
+	 */
+	public boolean updateMusiccflj(Music musicNew){
+		String sql="update mus_music_t set cflj='' where bh="+musicNew.getBh();
+		@SuppressWarnings("unused")
+		boolean count=this.psychologyJdbcDao.executeSQL(sql);
+		return true;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * 修改专辑名称
+	 * @param xjnr
+	 * @return
+	 */
+	@SuppressWarnings("unused")
+	public int updateMusiczjmc(Music musicNew,String zjmc){
+		String sql="update mus_music_t set zjmc='"+musicNew.getZjmc()+"' where zjmc='"+zjmc+"' and zzbh="+musicNew.getZzbh();
+		if(this.getPsychologyJdbcDao().executeSQL("update mus_music_t set zjmc='"+musicNew.getZjmc()+"' where zjmc='"+zjmc+"' and zzbh='"+musicNew.getZzbh()+"'")){
+			return 0;
+		}else{
+			return 1;
+		}
+	}
+	/**
+	 * 删除专辑
+	 * @param bhArray
+	 * @return
+	 */
+	public int deleteMusiczj(Music musicNew){
+		if(this.getPsychologyJdbcDao().executeSQL("DELETE from mus_music_t where zjmc='"+musicNew.getZjmc()+"'")){
+			return 0;
+		}else{
+			return 1;
+		}
+	}
+	
+	
+	
+	
+	/**
+	 * 添加推荐信息
+	 * @param recommend
+	 * @return
+	 */
+	public int saveRecommend(Recommend recommendNew){
+		String sql="select count(0) from mus_recommend_t where jssj>=curdate() and zzbh="+recommendNew.getBh()+"";
+		int count=this.psychologyJdbcDao.getTempInt(sql, 0);
+		if(count>0){
+			return 1;
+		}else{
+			return this.psychologyJdbcDao.executeMYSQLDB("save", "mus_recommend_t", recommendNew, "");
+		}
+	}
+	/**
+	 * 修改推荐信息
+	 * @param recommend
+	 * @return
+	 */
+	public int updateRecommend(Recommend recommendNew){
+	/*	String sql="select count(0) from mus_recommend_t where jssj>=curdate() and zzbh="+recommendNew.getBh()+"";
+		int count=this.psychologyJdbcDao.getTempInt(sql, 0);
+		if(count>0){
+			return 1;
+		}else{*/
+			return this.psychologyJdbcDao.executeMYSQLDB("update", "mus_recommend_t", recommendNew, "bh");
+		//}
+	}
+	/**
+	 * 删除推荐信息
+	 * @param recommend
+	 * @return
+	 */
+	public int deleteRecommend(Recommend recommendNew){
+		return this.psychologyJdbcDao.executeMYSQLDB("delete", "mus_recommend_t", recommendNew, "bh");
+	}
+	
+	
+	
+	/////////////////////////////////////
+	
+	
+	
+	/**
+	 * 查询被赞数量排行在前10名的作者
+	 * @return
+	 */
+	public List<Authorpraise> findAuthorpraisephtoplist(){
+		String sql="select t1.bh,t1.zzxm,CAST(IFNULL(t2.djsl,0) as char) zan from mus_author_t t1 "
+				+ "left join (select zzbh,count(1) djsl from mus_authorpraise_t group by zzbh) t2 on t1.bh=t2.zzbh "
+				+ "order by zan desc,t1.zzxm desc limit 10";
+		return this.psychologyJdbcDao.getList(sql, Authorpraise.class);
+	}
+	
+	/**
+	 * 查询出所有作者的关注数量、专辑收藏数量、专辑下载数量排行情况
+	 * @return
+	 */
+//	public List<Author> findAuthorphtoplist(String str){
+//		String sql="select t1.bh,CAST(t1.zzxm as char) zzxm,CAST(t2.sc as char) sc,CAST(t3.xz as char) xz,CAST(t4.dz as char) dz "
+//				+ "from mus_author_t t1 "
+//				+ "left join (select zzbh,count(1) sc from mus_favorites_t GROUP by zzbh ) t2 on t1.bh=t2.zzbh "
+//				+ "left join (select zzbh,count(1) xz from mus_download_t GROUP by zzbh ) t3 on t1.bh=t3.zzbh "
+//				+ "left join (select zzbh,count(1) dz from mus_authorpraise_t GROUP by zzbh ) t4 on t1.bh=t4.zzbh ";
+//		if(str!=null){
+//			sql+="order by t2.sc desc,zzxm desc;";
+//		}else{
+//			sql+="order by t4.dz desc,zzxm desc";
+//		}
+//		return this.psychologyJdbcDao.getList(sql, Author.class);
+//	}
+	
+	/////////////////////////////////////////
+		/**
+		 * 分页查询所有作者资料
+		 * @param pageResult
+		 * @param str
+		 * @return
+		 */
+		public PageResult findAuthorphtoplist(PageResult pageResult,String str,String sch){
+		   String sql="select t1.bh,CAST(t1.zzxm as char) zzxm,CAST(IFNULL(t2.sc,'') as char) sc,CAST(IFNULL(t3.xz,'') as char) xz,CAST(IFNULL(t4.dz,'') as char) dz "
+					+ "from mus_author_t t1 "
+					+ "left join (select zzbh,count(1) sc from mus_favorites_t GROUP by zzbh ) t2 on t1.bh=t2.zzbh "
+					+ "left join (select zzbh,count(1) xz from mus_download_t GROUP by zzbh ) t3 on t1.bh=t3.zzbh "
+					+ "left join (select zzbh,count(1) dz from mus_authorpraise_t GROUP by zzbh ) t4 on t1.bh=t4.zzbh ";
+			if(!sch.equals("undefined")){
+				 if(str.equals("5")){
+						sql+="where zzxm like'%"+sch+"%' order by t2.sc desc,zzxm desc";
+					}else{
+						sql+="where zzxm like'%"+sch+"%' order by t4.dz desc,zzxm desc";
+					}
+			}else{
+				if(str.equals("5")){
+					sql+="order by t2.sc desc,zzxm desc";
+				}else{
+					sql+="order by t4.dz desc,zzxm desc";
+				}
+			}
+		   pageResult=this.getPsychologyJdbcDao().findPageResult(sql, pageResult, Author.class);
+		   return pageResult;
+	   }
+	//////////////////////////////////////
+	/**
+	 * 查询被下载数量排行在前10名的专辑
+	 * @return
+	 */
+	public List<Download> findDownloadzjphtoplist(){
+		String sql="select t1.bh,CAST(t1.yymc as char) yymc,CAST(IFNULL(t2.xz,0) as char) xz,CAST(t1.zjmc as char) zjmc "
+				+ "from mus_music_t t1 "
+				+ "left join (select yybh,count(zjmc) xz from mus_download_t GROUP by zjmc) t2 "
+				+ "on t1.bh=t2.yybh group by zjmc order by t2.xz desc,zjmc desc limit 10;";
+		return this.psychologyJdbcDao.getList(sql, Download.class);
+	}
+	
+/*	/**
+	 * 查询出所有专辑的下载数量和收藏数量
+	 * @return
+	 *//*
+	public List<Music> findMusiczjphtoplist(){
+		String sql="select t1.bh,t4.zzxm,t1.yymc,CAST(t2.sc as char) sc,CAST(t3.xz as char) xz,CAST(t1.zjmc as char) zjmc "
+				+ "from mus_music_t t1 "
+				+ "left join (select yybh,count(1) sc from mus_favorites_t GROUP by yybh ) t2 on t1.bh=t2.yybh "
+				+ "left join (select yybh,count(zjmc) xz from mus_download_t GROUP by zjmc ) t3 on t1.bh=t3.yybh "
+				+ "left join mus_author_t t4 on t1.zzbh=t4.bh group by zjmc order by t3.xz desc,zjmc desc;";
+			return this.psychologyJdbcDao.getList(sql, Music.class);
+	}*/
+	
+	/////////////////////////////////////////
+		/**
+		* 分页查询出所有专辑的下载数量和收藏数量
+		* @param pageResult
+		* @param str
+		* @return
+		*/
+		public PageResult findMusiczjphtoplist(PageResult pageResult,String str,String sch){
+			String sql="select t1.bh,t4.zzxm,t1.yymc,CAST(IFNULL(t3.xz,'') as char) xz,CAST(IFNULL(t2.sc,'') as char) sc,CAST(IFNULL(t5.dz,'') as char) dz,CAST(t1.zjmc as char) zjmc "
+					+ "from mus_music_t t1 "
+					+ "left join (select yybh,count(1) sc from mus_favorites_t GROUP by yybh ) t2 on t1.bh=t2.yybh "
+					+ "left join (select yybh,count(zjmc) xz from mus_download_t GROUP by zjmc ) t3 on t1.bh=t3.yybh "
+					+ "left join mus_author_t t4 on t1.zzbh=t4.bh "
+					+ "left join (select zzbh,count(1) dz from mus_praise_t GROUP by zzbh) t5 on t5.zzbh=t4.bh ";
+			if(!sch.equals("undefined")){
+				if(str.equals("5")){
+					sql+="where zjmc like'%"+sch+"%' group by zjmc order by t2.sc desc,zjmc desc";
+				}else{
+					sql+="where zjmc like'%"+sch+"%' group by zjmc order by t3.xz desc,zjmc desc";
+				}
+			}else{
+				if(str.equals("5")){
+					sql+=" group by zjmc order by t2.sc desc,zjmc desc";
+				}else{
+					sql+=" group by zjmc order by t3.xz desc,zjmc desc";
+				}
+			}
+			pageResult=this.getPsychologyJdbcDao().findPageResult(sql, pageResult, Music.class);
+			return pageResult;
+		}
+	//////////////////////////////////////
+	
+	/**
+	 * 查询被下载数量排行在前10名的音乐
+	 * @return
+	 */
+	public List<Download> findDownloyyadphtoplist(){
+		String sql="select t1.bh,CAST(t1.zjmc as char) zjmc,CAST(t1.yymc as char) yymc,CAST(IFNULL(t2.xz,0) as char) xz "
+				+ "from mus_music_t t1 left join (select yybh,count(1) xz from mus_download_t GROUP by yybh) t2 "
+				+ "on t1.bh=t2.yybh order by t2.xz desc,yymc desc limit 10;";
+		return this.psychologyJdbcDao.getList(sql, Download.class);
+	}
+	
+/*	/**
+	 * 查询出所有音乐的下载数量和收藏数量
+	 * @return
+	 *//*
+	public List<Music> findMusicyyphtoplist(){
+	String sql="select t1.bh,t4.zzxm,CAST(t1.zjmc as char) zjmc,t1.yymc,CAST(t2.sc as char) sc,CAST(t3.xz as char) xz "
+			+ "from mus_music_t t1 "
+			+ "left join (select yybh,count(1) sc from mus_favorites_t GROUP by yybh ) t2 on t1.bh=t2.yybh "
+			+ "left join (select yybh,count(1) xz from mus_download_t GROUP by yybh ) t3 on t1.bh=t3.yybh "
+			+ "left join mus_author_t t4 on t1.zzbh=t4.bh order by t3.xz desc,yymc desc;";
+		return this.psychologyJdbcDao.getList(sql, Music.class);
+	}*/
+	
+	/////////////////////////////////////////
+	/**
+	* 分页查询出所有音乐的下载数量和收藏数量
+	* @param pageResult
+	* @param str
+	* @return
+	*/
+	public PageResult findMusicyyphtoplist(PageResult pageResult,String str,String sch){
+		String sql="select t1.bh,t4.zzxm,t1.yymc,CAST(IFNULL(t3.xz,'') as char) xz,CAST(IFNULL(t2.sc,'') as char) sc,CAST(IFNULL(t5.dz,'') as char) dz,CAST(t1.zjmc as char) zjmc "
+				+ "from mus_music_t t1 "
+				+ "left join (select yybh,count(1) sc from mus_favorites_t GROUP by yybh ) t2 on t1.bh=t2.yybh "
+				+ "left join (select yybh,count(yybh) xz from mus_download_t GROUP by yybh ) t3 on t1.bh=t3.yybh "
+				+ "left join mus_author_t t4 on t1.zzbh=t4.bh "
+				+ "left join (select zzbh,count(1) dz from mus_praise_t GROUP by zzbh) t5 on t5.zzbh=t4.bh ";
+		if(!sch.equals("undefined")){
+			if(str.equals("5")){
+				sql+="where yymc like'%"+sch+"%' order by t2.sc desc,yymc desc";
+			}else{
+				sql+="where yymc like'%"+sch+"%' order by t3.xz desc,yymc desc";
+			}
+		}else{
+			if(str.equals("5")){
+				sql+="order by t2.sc desc,yymc desc";
+			}else{
+				sql+="order by t3.xz desc,yymc desc";
+			}
+		}
+		pageResult=this.getPsychologyJdbcDao().findPageResult(sql, pageResult, Music.class);
+		return pageResult;
+		}
+	//////////////////////////////////////
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * 生成二维码
+	 */
+	private static final int BLACK = 0xFF000000;  
+	   private static final int WHITE = 0xFFFFFFFF;     
+	   public static BufferedImage toBufferedImage(BitMatrix matrix) {  
+	     int width = matrix.getWidth();  
+	     int height = matrix.getHeight();  
+	     BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);  
+	     for (int x = 0; x < width; x++) {  
+	       for (int y = 0; y < height; y++) {  
+	         image.setRGB(x, y, matrix.get(x, y) ? BLACK : WHITE);  
+	       }  
+	     }  
+	     return image;  
+	   }  
+	   public static void writeToFile(BitMatrix matrix, String format, File file)  
+	       throws IOException {  
+	     BufferedImage image = toBufferedImage(matrix);  
+	     if (!ImageIO.write(image, format, file)) {  
+	       throw new IOException("Could not write an image of format " + format + " to " + file);  
+	     }  
+	   }  
+	   public static void writeToStream(BitMatrix matrix, String format, OutputStream stream)  
+	       throws IOException {  
+	     BufferedImage image = toBufferedImage(matrix);  
+	     if (!ImageIO.write(image, format, stream)) {  
+	       throw new IOException("Could not write an image of format " + format);  
+	     }  
+	   }  
+	   /**
+	     *生成二维码
+	    */
+	   
+
+
+}

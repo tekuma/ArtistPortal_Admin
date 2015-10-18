@@ -1,0 +1,94 @@
+package com.zhhb.system.entity;
+
+import java.util.Date;
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Download extends BaseEntity {
+	
+	private Integer bh;//编号
+	private Integer zzbh;//作者编号
+	private Integer hybh;//会员编号
+	private Date xzsj;//下载时间
+	private String zjmc;//专辑名称
+	private String fffs;//付费方式：积分、货币
+	private Float ffe;//付费额
+	private Integer yybh;//音乐编号
+	
+	private String yymc;//音乐名称
+	private String dz;//专辑点赞
+	private String xz;//下载数量
+	
+	
+	
+	public String getXz() {
+		return xz;
+	}
+	public void setXz(String xz) {
+		this.xz = xz;
+	}
+	public String getYymc() {
+		return yymc;
+	}
+	public void setYymc(String yymc) {
+		this.yymc = yymc;
+	}
+	public String getDz() {
+		return dz;
+	}
+	public void setDz(String dz) {
+		this.dz = dz;
+	}
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public Integer getZzbh() {
+		return zzbh;
+	}
+	public void setZzbh(Integer zzbh) {
+		this.zzbh = zzbh;
+	}
+	public Integer getHybh() {
+		return hybh;
+	}
+	public void setHybh(Integer hybh) {
+		this.hybh = hybh;
+	}
+	public Date getXzsj() {
+		return xzsj;
+	}
+	public void setXzsj(Date xzsj) {
+		this.xzsj = xzsj;
+	}
+	public String getZjmc() {
+		return zjmc;
+	}
+	public void setZjmc(String zjmc) {
+		this.zjmc = zjmc;
+	}
+	public String getFffs() {
+		return fffs;
+	}
+	public void setFffs(String fffs) {
+		this.fffs = fffs;
+	}
+	public Float getFfe() {
+		return ffe;
+	}
+	public void setFfe(Float ffe) {
+		this.ffe = ffe;
+	}
+	public Integer getYybh() {
+		return yybh;
+	}
+	public void setYybh(Integer yybh) {
+		this.yybh = yybh;
+	}
+	
+	
+	
+	
+}

@@ -1,0 +1,82 @@
+package com.zhhb.system.entity;
+
+import java.util.Date;
+
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Recommend extends BaseEntity {
+	
+	private Integer bh;//编号
+	private Integer zzbh;//作者编号
+	private String zzxm;//作者姓名
+	private Date kssj;//开始时间
+	private Date jssj;//结束时间
+	private Integer tjsc;//推荐时长
+	private String czy;//操作员
+	private Date lrsj;//操作时间
+	
+	private String txlj;//头像
+	
+	
+	
+	
+	public String getTxlj() {
+		return txlj;
+	}
+	public void setTxlj(String txlj) {
+		this.txlj = txlj;
+	}
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public Integer getZzbh() {
+		return zzbh;
+	}
+	public void setZzbh(Integer zzbh) {
+		this.zzbh = zzbh;
+	}
+	public String getZzxm() {
+		return zzxm;
+	}
+	public void setZzxm(String zzxm) {
+		this.zzxm = zzxm;
+	}
+	public Date getKssj() {
+		return kssj;
+	}
+	public void setKssj(Date kssj) {
+		this.kssj = kssj;
+	}
+	public Date getJssj() {
+		return jssj;
+	}
+	public void setJssj(Date jssj) {
+		this.jssj = jssj;
+	}
+	public Integer getTjsc() {
+		return tjsc;
+	}
+	public void setTjsc(Integer tjsc) {
+		this.tjsc = tjsc;
+	}
+	public String getCzy() {
+		return czy;
+	}
+	public void setCzy(String czy) {
+		this.czy = czy;
+	}
+	public Date getLrsj() {
+		return lrsj;
+	}
+	public void setLrsj(Date lrsj) {
+		this.lrsj = lrsj;
+	}
+	
+
+	
+	
+}

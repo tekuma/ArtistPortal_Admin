@@ -1,0 +1,50 @@
+@charset "utf-8";
+/* CSS Document */
+//栅格化标签默认样式
+body{
+	font-family: 'Courgette', cursive;
+}
+body{
+	background:#E1F8FE;
+}	
+.wrap{
+	margin:0 auto;
+	width:1000px;
+}
+.logo{
+	margin-top:50px;
+}	
+.logo h4{
+	text-align: center;
+}	
+.logo p{
+	color:rgb(228, 146, 162);
+	font-size:20px;
+	margin-top:1px;
+	text-align:center;
+}	
+.logo p span{
+	color:#400040;
+	font-size: 40px;
+}	
+.sub a{
+	color:white;
+	background:#8F8E8C;
+	text-decoration:none;
+	padding:7px 120px;
+	font-size:13px;
+	font-family: arial, serif;
+	font-weight:bold;
+	-webkit-border-radius:3em;
+	-moz-border-radius:.1em;
+	-border-radius:.1em;
+}	
+.footer{
+	color:#8F8E8C;
+	position:absolute;
+	right:10px;
+	bottom:10px;
+}	
+.footer a{
+	color:rgb(228, 146, 162);
+}	

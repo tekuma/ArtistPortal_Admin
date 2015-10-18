@@ -1,0 +1,125 @@
+package com.zhhb.system.entity;
+
+import com.pintu.pub.entity.BaseEntity;
+
+
+@SuppressWarnings("serial")
+public class Author extends BaseEntity {
+	
+	private Integer bh;//编号
+	private String zzxm;//作者姓名
+	private String lxdh;//联系电话
+	private Integer gzsl;//关注数量
+	private Float pjxj;//评价星级
+	private String txlj;//头像路径
+	private String ewmlj;//二维码
+	private Integer yjflbh;//一级分类编号
+	private String ejfl;//二级分类
+	private Integer zzbh;//作者编号
+	private String bjtplj;//背景图片路径
+	
+	private String dz;//点赞
+	private String sc;//收藏
+	private String xz;//下载
+	
+	private Integer ejflxh;//二级分类序号
+	
+	
+	
+	
+	public Integer getEjflxh() {
+		return ejflxh;
+	}
+	public void setEjflxh(Integer ejflxh) {
+		this.ejflxh = ejflxh;
+	}
+	public String getDz() {
+		return dz;
+	}
+	public void setDz(String dz) {
+		this.dz = dz;
+	}
+	public String getSc() {
+		return sc;
+	}
+	public void setSc(String sc) {
+		this.sc = sc;
+	}
+	public String getXz() {
+		return xz;
+	}
+	public void setXz(String xz) {
+		this.xz = xz;
+	}
+	public String getBjtplj() {
+		return bjtplj;
+	}
+	public void setBjtplj(String bjtplj) {
+		this.bjtplj = bjtplj;
+	}
+	public Integer getZzbh() {
+		return zzbh;
+	}
+	public void setZzbh(Integer zzbh) {
+		this.zzbh = zzbh;
+	}
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public String getZzxm() {
+		return zzxm;
+	}
+	public void setZzxm(String zzxm) {
+		this.zzxm = zzxm;
+	}
+	public String getLxdh() {
+		return lxdh;
+	}
+	public void setLxdh(String lxdh) {
+		this.lxdh = lxdh;
+	}
+	public Integer getGzsl() {
+		return gzsl;
+	}
+	public void setGzsl(Integer gzsl) {
+		this.gzsl = gzsl;
+	}
+	public Float getPjxj() {
+		return pjxj;
+	}
+	public void setPjxj(Float pjxj) {
+		this.pjxj = pjxj;
+	}
+	public String getTxlj() {
+		return txlj;
+	}
+	public void setTxlj(String txlj) {
+		this.txlj = txlj;
+	}
+	public String getEwmlj() {
+		return ewmlj;
+	}
+	public void setEwmlj(String ewmlj) {
+		this.ewmlj = ewmlj;
+	}
+
+	public Integer getYjflbh() {
+		return yjflbh;
+	}
+	public void setYjflbh(Integer yjflbh) {
+		this.yjflbh = yjflbh;
+	}
+	public String getEjfl() {
+		return ejfl;
+	}
+	public void setEjfl(String ejfl) {
+		this.ejfl = ejfl;
+	}
+
+	
+	
+	
+}

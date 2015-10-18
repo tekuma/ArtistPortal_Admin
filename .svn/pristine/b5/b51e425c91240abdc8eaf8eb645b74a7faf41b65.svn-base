@@ -1,0 +1,69 @@
+package com.zhhb.system.entity;
+
+import java.util.Date;
+
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Authorpraise extends BaseEntity {
+	
+	private Integer bh;//编号
+	private Integer zzbh;//作者编号
+	private Integer hybh;//会员编号
+	private Date dzsj;//点赞时间
+	private Integer sfdz;//是否点赞
+	
+	private String zzxm;//作者姓名
+	private String zan;//赞的数量
+	
+	
+	
+	
+	public Integer getSfdz() {
+		return sfdz;
+	}
+	public void setSfdz(Integer sfdz) {
+		this.sfdz = sfdz;
+	}
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public Integer getZzbh() {
+		return zzbh;
+	}
+	public void setZzbh(Integer zzbh) {
+		this.zzbh = zzbh;
+	}
+	public Integer getHybh() {
+		return hybh;
+	}
+	public void setHybh(Integer hybh) {
+		this.hybh = hybh;
+	}
+	public Date getDzsj() {
+		return dzsj;
+	}
+	public void setDzsj(Date dzsj) {
+		this.dzsj = dzsj;
+	}
+	public String getZzxm() {
+		return zzxm;
+	}
+	public void setZzxm(String zzxm) {
+		this.zzxm = zzxm;
+	}
+	public String getZan() {
+		return zan;
+	}
+	public void setZan(String zan) {
+		this.zan = zan;
+	}
+	
+	
+	
+	
+	
+}

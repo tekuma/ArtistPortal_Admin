@@ -1,0 +1,81 @@
+package com.zhhb.system.entity;
+
+import java.util.Date;
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Mobileinfo extends BaseEntity {
+
+	private Integer bh;//编号
+	private String uuid;//UUid
+	private String sbxt;//设备系统
+	private String sbxtbb;//设备系统版本
+	private Date scdlsj;//上次登陆时间
+	private String appbb;//App版本
+	private Date zjdlsj;//最近登陆时间
+	private Integer jzdl;//禁止登陆:1 禁止 0 正常
+	private String applx;//App类型：医生端、患者端
+	
+	
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+	public String getSbxt() {
+		return sbxt;
+	}
+	public void setSbxt(String sbxt) {
+		this.sbxt = sbxt;
+	}
+	public String getSbxtbb() {
+		return sbxtbb;
+	}
+	public void setSbxtbb(String sbxtbb) {
+		this.sbxtbb = sbxtbb;
+	}
+	public Date getScdlsj() {
+		return scdlsj;
+	}
+	public void setScdlsj(Date scdlsj) {
+		this.scdlsj = scdlsj;
+	}
+	public String getAppbb() {
+		return appbb;
+	}
+	public void setAppbb(String appbb) {
+		this.appbb = appbb;
+	}
+	public Date getZjdlsj() {
+		return zjdlsj;
+	}
+	public void setZjdlsj(Date zjdlsj) {
+		this.zjdlsj = zjdlsj;
+	}
+	public Integer getJzdl() {
+		return jzdl;
+	}
+	public void setJzdl(Integer jzdl) {
+		this.jzdl = jzdl;
+	}
+	public String getApplx() {
+		return applx;
+	}
+	public void setApplx(String applx) {
+		this.applx = applx;
+	}
+	
+	
+	
+	
+	
+	
+	
+}

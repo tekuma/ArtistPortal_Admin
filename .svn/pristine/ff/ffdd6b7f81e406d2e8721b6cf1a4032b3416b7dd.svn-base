@@ -1,0 +1,69 @@
+package com.zhhb.system.entity;
+
+import java.util.Date;
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Favorites extends BaseEntity {
+	
+	private Integer bh;//编号
+	private Integer hybh;//会员编号
+	private Integer zzbh;//作者编号
+	private Integer yybh;//音乐编号
+	private Date scsj;//收藏时间
+	private String zjmc;//专辑名称
+	private String ffxs;//付费形式
+	private Float ffe;//付费额
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public Integer getHybh() {
+		return hybh;
+	}
+	public void setHybh(Integer hybh) {
+		this.hybh = hybh;
+	}
+	public Integer getZzbh() {
+		return zzbh;
+	}
+	public void setZzbh(Integer zzbh) {
+		this.zzbh = zzbh;
+	}
+	public Integer getYybh() {
+		return yybh;
+	}
+	public void setYybh(Integer yybh) {
+		this.yybh = yybh;
+	}
+	public Date getScsj() {
+		return scsj;
+	}
+	public void setScsj(Date scsj) {
+		this.scsj = scsj;
+	}
+	public String getZjmc() {
+		return zjmc;
+	}
+	public void setZjmc(String zjmc) {
+		this.zjmc = zjmc;
+	}
+	public String getFfxs() {
+		return ffxs;
+	}
+	public void setFfxs(String ffxs) {
+		this.ffxs = ffxs;
+	}
+	public Float getFfe() {
+		return ffe;
+	}
+	public void setFfe(Float ffe) {
+		this.ffe = ffe;
+	}
+	
+	
+	
+	
+}

@@ -1,0 +1,75 @@
+package com.zhhb.system.entity;
+
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Authordetail extends BaseEntity {
+
+	private Integer zzbh;//作者编号
+	private Integer xb;//性别
+	private String zy;//职业
+	private String zc;//职称
+	private String lxdz;//联系地址
+	private String zytc;//专业特长
+	private String zzjj;//作者简介
+	private String gxqm;//个性签名
+	private String hdry;//获得荣誉
+	
+	
+	public Integer getZzbh() {
+		return zzbh;
+	}
+	public void setZzbh(Integer zzbh) {
+		this.zzbh = zzbh;
+	}
+	public Integer getXb() {
+		return xb;
+	}
+	public void setXb(Integer xb) {
+		this.xb = xb;
+	}
+	public String getZy() {
+		return zy;
+	}
+	public void setZy(String zy) {
+		this.zy = zy;
+	}
+	public String getZc() {
+		return zc;
+	}
+	public void setZc(String zc) {
+		this.zc = zc;
+	}
+	public String getLxdz() {
+		return lxdz;
+	}
+	public void setLxdz(String lxdz) {
+		this.lxdz = lxdz;
+	}
+	public String getZytc() {
+		return zytc;
+	}
+	public void setZytc(String zytc) {
+		this.zytc = zytc;
+	}
+	public String getZzjj() {
+		return zzjj;
+	}
+	public void setZzjj(String zzjj) {
+		this.zzjj = zzjj;
+	}
+	public String getGxqm() {
+		return gxqm;
+	}
+	public void setGxqm(String gxqm) {
+		this.gxqm = gxqm;
+	}
+	public String getHdry() {
+		return hdry;
+	}
+	public void setHdry(String hdry) {
+		this.hdry = hdry;
+	}
+	
+	
+}

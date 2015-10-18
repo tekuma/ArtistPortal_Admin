@@ -1,0 +1,90 @@
+package com.zhhb.system.entity;
+
+import java.util.Date;
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Share extends BaseEntity {
+	
+	private Integer bh;//编号
+	private Integer hybh;//会员编号
+	private Integer zzbh;//作者编号
+	private Integer yybh;//音乐编号
+	private String zjmc;//专辑名称
+	private String yymc;//音乐名称
+	private String fxlb;//分享类别：转发、分享
+	private String fxqd;//分享渠道：微博、微信、QQ
+	private Integer hdjf;//获得积分
+	private String zzxm;//作者姓名
+	private Date fxsj;//分享时间
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public Integer getHybh() {
+		return hybh;
+	}
+	public void setHybh(Integer hybh) {
+		this.hybh = hybh;
+	}
+	public Integer getZzbh() {
+		return zzbh;
+	}
+	public void setZzbh(Integer zzbh) {
+		this.zzbh = zzbh;
+	}
+	public Integer getYybh() {
+		return yybh;
+	}
+	public void setYybh(Integer yybh) {
+		this.yybh = yybh;
+	}
+	public String getZjmc() {
+		return zjmc;
+	}
+	public void setZjmc(String zjmc) {
+		this.zjmc = zjmc;
+	}
+	public String getYymc() {
+		return yymc;
+	}
+	public void setYymc(String yymc) {
+		this.yymc = yymc;
+	}
+	public String getFxlb() {
+		return fxlb;
+	}
+	public void setFxlb(String fxlb) {
+		this.fxlb = fxlb;
+	}
+	public String getFxqd() {
+		return fxqd;
+	}
+	public void setFxqd(String fxqd) {
+		this.fxqd = fxqd;
+	}
+	public Integer getHdjf() {
+		return hdjf;
+	}
+	public void setHdjf(Integer hdjf) {
+		this.hdjf = hdjf;
+	}
+	public String getZzxm() {
+		return zzxm;
+	}
+	public void setZzxm(String zzxm) {
+		this.zzxm = zzxm;
+	}
+	public Date getFxsj() {
+		return fxsj;
+	}
+	public void setFxsj(Date fxsj) {
+		this.fxsj = fxsj;
+	}
+	
+	
+	
+	
+}

@@ -1,0 +1,132 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+
+<style>
+  .list-name-input{
+   color: #333;
+   font-family: tahoma, 'Microsoft YaHei', 'Segoe UI', Arial, 'Microsoft Yahei', Simsun, sans-serif;
+   font-size: 15px;
+   font-weight: bold;
+   height: 50px;
+   margin: 0px;
+   padding: 0px;
+   position: relative;
+   width: 230px;
+  }
+  .list-name-for-select{
+   border: 0;
+   color: #555;
+   height: 20px;
+   lighting-color: rgb(255, 255, 255);
+   line-height: 20px;
+   margin:0 0 10px 0;
+
+   outline-color: #555;
+   outline-offset: 0px;
+   outline-style: none;
+   outline-width: 0px;
+
+   padding: 4px 3px;
+   position: absolute;
+   top: 1px;
+   left: 0px;
+   vertical-align: middle;
+   width: 180px;
+  }
+  .list-name-input-for-select:focus{
+   border: 0;
+   border-radius: 0;
+  }
+  .list-select{
+   background-color: #FFF;
+   border:1px #ccc solid;
+   border-radius: 4px;
+   color: #555;
+   cursor: pointer;
+   height: 30px;
+   left: 0px;
+   margin:0 0 10px 0;
+   padding: 4px 6px;
+   position: absolute;
+   top: 0px;
+   vertical-align: middle;
+   white-space: pre;
+   width: 210px;
+  }
+ </style>
+ <script>
+	  var listName = document.getElementById('list-name-for-select');
+	  var listSelect = document.getElementById('list-select').onchange = function(e){
+	   console.log(this);
+	   listName.value ="";
+	   if(this.value){
+	    	listName.value =this.options[this.selectedIndex].text;
+	   }else{
+	    	listName.value = ''
+	   }
+	  };
+
+</script>
+
+<script type="text/javascript">
+		//表单提交
+		function updateauthorejfl_submit(){
+			var input_updateauthorejfl_id=$("#input_updateauthorejfl_bh").val();
+			var input_updateauthorejfl_lbmc=$("#input_updateauthorejfl_mc").val();
+			//alert(input_updateauthorejfl_id);
+			//alert(input_updateauthorejfl_lbmc);
+			public_formSubmit($("#formid_updateauthorejfl_form"),function(returnJSON){
+				//alert(returnJSON.returnTYPE);
+				if(returnJSON.returnTYPE=="0"){
+					public_openAlert('提示',returnJSON.returnMESSAGE,0);
+					musiclist_findAuthorTypeToAuthor(input_updateauthorejfl_id,input_updateauthorejfl_lbmc,'0');
+				}else{
+					public_openAlert('错误',returnJSON.returnMESSAGE,1);
+					musiclist_findAuthorTypeToAuthor(input_updateauthorejfl_id,input_updateauthorejfl_lbmc,'0');
+				}
+				public_closeWindow('updateEjfl');
+			}); 
+		}
+</script>
+
+
+	<form action="musicManage_updateAuthorejfl.do" method="post" id="formid_updateauthorejfl_form" class="form-horizontal">
+		<input type="hidden"  name="authorNew.bh" value="${authorNew.bh}">
+		<input type="hidden"  name="gn" value="${gn}">
+		<input type="hidden" id="input_updateauthorejfl_bh"  value="${authorNew.yjflbh}">
+		<input type="hidden"  id="input_updateauthorejfl_mc" value="${authortypeNew.lbmc}">
+		<div class="control-group password-strength" style="padding-top: 40px;">
+			<label class="control-label">二级类别名称:<span class="required">*</span></label>
+			<div class="controls">
+				<div id="list-name-input" class="list-name-input">
+					<select type="text" class="list-select" id="list-select" >
+							<option value="" selected="selected" style="display: none;"></option>
+				     	<s:iterator value="authorlist" id="aaalist">
+							<option value="${aaalist.ejfl}" >${aaalist.ejfl}</option>
+				        </s:iterator>
+					 </select>
+					 <input type="text" required placeholder="必填项" class="name item-width list-name-for-select" id="list-name-for-select" name="authorNew.ejfl" value="${authorNew.ejfl }">
+					 <input type="hidden" class="required"  name="oldejflmc" value="${authorNew.ejfl}">
+				</div>
+			</div>
+		</div>
+		<div align="center">
+			<button type="button" class="btn green" onclick="updateauthorejfl_submit()">保存</button>
+			<button type="button" data-dismiss="modal" onclick="public_closeWindow('updateEjfl')" class="btn">取消</button>     
+		</div>
+	</form>
+<script type="text/javascript" src="../plugins/select2/select2.min.js"></script>
+<script type="text/javascript" src="../plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="../plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="../plugins/jquery-inputmask/jquery.inputmask.bundle.min.js"></script>   
+<script type="text/javascript" src="../plugins/jquery.input-ip-address-control-1.0.min.js"></script>
+<script type="text/javascript" src="../plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+<script type="text/javascript" src="../themes/admin/metronic_admin/_static/scripts/form-components.js"></script> 
+<script type="text/javascript" src="../plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>  
+<script>
+	jQuery(document).ready(function() {          
+	   // initiate layout and plugins
+	   //App.init();
+	   FormComponents.init();
+	});
+</script>

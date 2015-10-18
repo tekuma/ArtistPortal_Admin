@@ -1,0 +1,1026 @@
+package com.zhhb.system.action;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.net.SocketException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
+import org.apache.struts2.ServletActionContext;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.mp3.MP3AudioHeader;
+import org.jaudiotagger.audio.mp3.MP3File;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.zhhb.server.comm.PublicUilt;
+import com.zhhb.system.entity.Author;
+import com.zhhb.system.entity.Authorpraise;
+import com.zhhb.system.entity.Authortype;
+import com.zhhb.system.entity.Download;
+import com.zhhb.system.entity.Functionlist;
+import com.zhhb.system.entity.Music;
+import com.zhhb.system.entity.Param;
+import com.zhhb.system.entity.Recommend;
+import com.zhhb.system.entity.User;
+import com.zhhb.system.service.MusicManageService;
+import com.pintu.pub.action.BaseAction;
+import com.pintu.pub.page.PageResult;
+
+
+
+
+@SuppressWarnings({ "unused", "unchecked", "serial" })
+@Scope("prototype")
+@Controller(value = "musicManageAction")
+public class MusicManageAction extends BaseAction {
+	@Resource
+	private MusicManageService musicManageService;
+	
+
+	private Recommend recommendNew;//推荐表
+	private List<Recommend> recommendlist;
+	private Author authorNew;//作者表
+	private List<Author> authorlist;
+	private Authortype authortypeNew;//一级分类表
+	private List<Authortype> authortypelist;
+	private Music musicNew;//音乐信息表
+	private List<Music> musiclist;
+	private Authorpraise authorpraiseNew;//点赞表
+	private List<Authorpraise> authorpraiselist;
+	private Download downloadNew;//音乐下载表
+	private List<Download> downloadlist;
+	private List<Download> downloadlistzj;
+	private List<String> ejflxh;//二级分类序号
+	
+	private File[] upload;//图像上传
+	private String[] uploadFileName;  
+	private String[] uploadContentType;  
+
+	
+	public File[] getUpload() {
+		return upload;
+	}
+	public void setUpload(File[] upload) {
+		this.upload = upload;
+	}
+	public String[] getUploadFileName() {
+		return uploadFileName;
+	}
+	public void setUploadFileName(String[] uploadFileName) {
+		this.uploadFileName = uploadFileName;
+	}
+	public String[] getUploadContentType() {
+		return uploadContentType;
+	}
+	public void setUploadContentType(String[] uploadContentType) {
+		this.uploadContentType = uploadContentType;
+	}
+	public List<Download> getDownloadlistzj() {
+		return downloadlistzj;
+	}
+	public void setDownloadlistzj(List<Download> downloadlistzj) {
+		this.downloadlistzj = downloadlistzj;
+	}
+	public List<String> getEjflxh() {
+		return ejflxh;
+	}
+	public void setEjflxh(List<String> ejflxh) {
+		this.ejflxh = ejflxh;
+	}
+	public Download getDownloadNew() {
+		return downloadNew;
+	}
+	public void setDownloadNew(Download downloadNew) {
+		this.downloadNew = downloadNew;
+	}
+	public List<Download> getDownloadlist() {
+		return downloadlist;
+	}
+	public void setDownloadlist(List<Download> downloadlist) {
+		this.downloadlist = downloadlist;
+	}
+	public Authorpraise getAuthorpraiseNew() {
+		return authorpraiseNew;
+	}
+	public void setAuthorpraiseNew(Authorpraise authorpraiseNew) {
+		this.authorpraiseNew = authorpraiseNew;
+	}
+	public List<Authorpraise> getAuthorpraiselist() {
+		return authorpraiselist;
+	}
+	public void setAuthorpraiselist(List<Authorpraise> authorpraiselist) {
+		this.authorpraiselist = authorpraiselist;
+	}
+	public Recommend getRecommendNew() {
+		return recommendNew;
+	}
+	public void setRecommendNew(Recommend recommendNew) {
+		this.recommendNew = recommendNew;
+	}
+	public List<Recommend> getRecommendlist() {
+		return recommendlist;
+	}
+	public void setRecommendlist(List<Recommend> recommendlist) {
+		this.recommendlist = recommendlist;
+	}
+	public Author getAuthorNew() {
+		return authorNew;
+	}
+	public void setAuthorNew(Author authorNew) {
+		this.authorNew = authorNew;
+	}
+	public List<Author> getAuthorlist() {
+		return authorlist;
+	}
+	public void setAuthorlist(List<Author> authorlist) {
+		this.authorlist = authorlist;
+	}
+	public Authortype getAuthortypeNew() {
+		return authortypeNew;
+	}
+	public void setAuthortypeNew(Authortype authortypeNew) {
+		this.authortypeNew = authortypeNew;
+	}
+	public List<Authortype> getAuthortypelist() {
+		return authortypelist;
+	}
+	public void setAuthortypelist(List<Authortype> authortypelist) {
+		this.authortypelist = authortypelist;
+	}
+	public Music getMusicNew() {
+		return musicNew;
+	}
+	public void setMusicNew(Music musicNew) {
+		this.musicNew = musicNew;
+	}
+	public List<Music> getMusiclist() {
+		return musiclist;
+	}
+	public void setMusiclist(List<Music> musiclist) {
+		this.musiclist = musiclist;
+	}
+	
+	
+	
+	
+	/***
+	 * 查询作者一级分类
+	 * 
+	 * */
+	public String findAuthorTypeList(){
+		this.authortypelist=this.musicManageService.findAuthorTypeList();
+		this.recommendlist=this.musicManageService.findRecommendlist();
+		return "findAuthorTypeList";
+	}
+	/**
+	 * 根据作者一级分类查询作者
+	 * */
+	public void findAuthorTypeToAuthor(){
+		String yjflbh=this.request.getParameter("yjflbh");
+		this.authorlist=this.musicManageService.findAuthorTypeToAuthor(Integer.valueOf(yjflbh));
+		this.entityReturnJson(this.authorlist);
+	}
+	/**
+	 * 查询推荐
+	 * */
+	public void findRecommendlist(){
+		this.recommendlist=this.musicManageService.findRecommendlist();
+		this.entityReturnJson(this.recommendlist);
+	}
+
+	
+	/**
+	 * 一级类别功能跳转
+	 * @return
+	 */
+	public void authortypeSkip(){
+		String gn=this.request.getParameter("gn");
+		if(gn.equals("add")){
+			this.saveAuthortype();
+		}
+		if(gn.equals("update")){
+			this.updateAuthortype();
+		}
+	}
+	/**
+	 * 跳到一级类别添加窗口
+	 * */
+	public String addAuthortype(){
+		String gn=this.request.getParameter("gn");
+		this.request.setAttribute("gn", gn);
+		return "AddAuthortype";
+	}
+	public void saveAuthortype(){
+		int iError=this.musicManageService.saveAuthortype(this.authortypeNew);
+		if(iError>0){
+			this.submitReturnJSONString("1", "类别已存在！","");
+		}else{
+			this.submitReturnJSONString("0", "类别添加成功！","");
+		}
+	}
+	
+	/**
+	 * 跳到一级类别修改窗口
+	 * @param authortypeNew
+	 * @return
+	 */
+	public String updatebyAuthortypebh(){
+		String gn=this.request.getParameter("gn");
+		this.request.setAttribute("gn", gn);
+		String yjflbh=this.request.getParameter("yjflbh");
+		String sql="select * from mus_authortype_t where bh="+yjflbh;
+		this.authortypeNew=(Authortype)this.musicManageService.getPsychologyJdbcDao().getList(sql, Authortype.class).get(0);
+		return "AddAuthortype";
+	}
+	/**
+	 * 修改一级类别信息
+	 * @return
+	 */
+	public void updateAuthortype(){
+		int iError=this.musicManageService.updateAuthortype(this.authortypeNew);
+		if(iError>0){
+			this.submitReturnJSONString("1","修改失败，类别已存在！","");
+		}else{
+			this.submitReturnJSONString("0","修改成功！","");
+		}
+	}
+	
+	/**
+	 * 删除一级类别信息
+	 */
+	public void deleteAuthortype(){
+		//删除一级分类下面的所有作者音乐文件
+		String sql="select bh from mus_author_t where yjflbh='"+this.authortypeNew.getBh()+"'";
+		this.authorlist=this.musicManageService.getPsychologyJdbcDao().getList(sql, Author.class);
+		if(this.authorlist!=null){
+			for(int i = 0;i<this.authorlist.size();i++){
+				this.delFileOrDerectory("E:\\project\\tup\\WebContent\\author\\"+this.authorlist.get(i).getBh());
+				if(this.musicManageService.getPsychologyJdbcDao().executeSQL("DELETE from mus_music_t where zzbh='"+this.authorlist.get(i).getBh()+"'")&& this.musicManageService.getPsychologyJdbcDao().executeSQL("DELETE from mus_authordetail_t where zzbh="+this.authorlist.get(i).getBh())){
+					if(this.musicManageService.getPsychologyJdbcDao().executeSQL("DELETE from mus_recommend_t where zzbh='"+this.authorlist.get(i).getBh()+"'")){
+						if(this.musicManageService.getPsychologyJdbcDao().executeSQL("DELETE from mus_share_t where zzbh='"+this.authorlist.get(i).getBh()+"'")){
+						}
+					}
+				}
+			}
+		}
+		int iError=this.musicManageService.deleteAuthortype(this.authortypeNew);
+		if(iError==0){
+			this.submitReturnJSONString("0", "一级分类删除成功！","");
+		}else{
+			this.submitReturnJSONString("1", "一级分类删除失败！","");
+		}
+	}
+	
+	
+	/**
+	 * 跳到修改二级名称分类窗口
+	 * @param authortypeNew
+	 * @return
+	 */
+	public String updateAuthorejflkk(){
+		String gn=this.request.getParameter("gn");
+		String yjflbh=this.request.getParameter("yjflbh");
+		String ejfl=this.request.getParameter("bh");
+		int bh=Integer.parseInt(ejfl);
+		this.request.setAttribute("gn", gn);
+		String sql="select * from mus_author_t where bh="+bh;
+		this.authorNew=(Author)this.musicManageService.getPsychologyJdbcDao().getList(sql, Author.class).get(0);
+		String Sql="select * from mus_authortype_t where bh="+yjflbh;
+		this.authortypeNew=(Authortype)this.musicManageService.getPsychologyJdbcDao().getList(Sql, Authortype.class).get(0);
+		this.authorlist=this.musicManageService.findAuthorbyejfl(authorNew);
+		return "updateauthorejflkk";
+	}
+	/**
+	 * 修改二级分类名称
+	 * @return
+	 */
+	public void updateAuthorejfl(){	
+		String ejflmc=this.request.getParameter("oldejflmc");
+		String yjflbh=this.request.getParameter("yjflbh");
+		int iError=this.musicManageService.updateAuthorejfl(this.authorNew, ejflmc);
+		if(iError>0){
+			this.submitReturnJSONString("1", "二级分类名称修改失败！","");
+		}else{
+			this.submitReturnJSONString("0", "二级分类名称修改成功！","");
+		}
+	}
+//	/**
+//	 * 返回一级分类查询作者
+//	 * */
+//	public String findAuthorTypeToAuthorlist(){
+//		this.authortypelist=this.musicManageService.findAuthorTypeList();
+//		this.recommendlist=this.musicManageService.findRecommendlist();
+//		String yjflbh=this.request.getParameter("yjflbh");
+//		this.authorlist=this.musicManageService.findAuthorTypeToAuthor(Integer.valueOf(yjflbh));
+//		
+//		return "findMusic";
+//	}
+//	
+	/**
+	 * 删除二级分类名称
+	 * @throws IOException 
+	 */
+	public void deleteAuthorejfl(){
+		String sql="select * from mus_author_t where bh="+this.authorNew.getBh();
+		this.authorNew=(Author)this.musicManageService.getPsychologyJdbcDao().getList(sql, Author.class).get(0);
+		//删除二级分类下的作者
+		String sqlejfl="select * from mus_author_t where ejfl='"+this.authorNew.getEjfl()+"' and yjflbh="+this.authorNew.getYjflbh();
+		this.authorlist=this.musicManageService.getPsychologyJdbcDao().getList(sqlejfl, Author.class);
+		int iError=0;
+		for(int i = 0;i<this.authorlist.size();i++){
+			this.delFileOrDerectory(this.musicManageService.getPsychologyJdbcDao().getTempExcelExpPath()+"/author/"+this.authorlist.get(i).getBh()); 
+			//System.out.println(this.musicManageService.getPsychologyJdbcDao().getTempExcelExpPath()+"/author/"+this.authorlist.get(i).getBh());
+			iError+=this.musicManageService.deleteAuthorejfl(this.authorlist.get(i));
+		}
+		if(iError==0){
+			this.submitReturnJSONString("0", "二级分类删除成功！","");
+		}else{
+			this.submitReturnJSONString("1", "二级分类删除失败！","");
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * 作者功能跳转
+	 * @return
+	 * @throws Exception 
+	 */
+	public void authorSkip() throws Exception{
+		String gn=this.request.getParameter("gn");
+		if(gn.equals("add")){
+			this.saveAuthor();
+		}
+		if(gn.equals("update")){
+			this.updateAuthor();
+		}
+	}
+	/**
+	 * 跳到作者信息添加窗口
+	 * @throws UnsupportedEncodingException 
+	 * */
+	public String addAuthor() throws UnsupportedEncodingException{
+		String gn=this.request.getParameter("gn");
+		String yjflbh=this.request.getParameter("yjflbh");
+		this.request.setAttribute("gn", gn);
+		String lbmc=this.request.getParameter("authorlbmc");
+		lbmc = java.net.URLDecoder.decode(lbmc,"UTF-8"); 
+		this.request.setAttribute("lbmc", lbmc);
+		this.request.setAttribute("lbmcbh", this.authorNew.getYjflbh());
+		this.authortypelist=this.musicManageService.findAuthortypelist();
+		this.authorlist=this.musicManageService.findAuthorbyejfl(this.authorNew);
+		return "AddAuthor";
+	}
+	public void saveAuthor() throws Exception{
+		authorNew.setBh(this.musicManageService.getPsychologyJdbcDao().getTempInt("select sys_seqnextval_f ('mus_author_s')", 0));
+		
+		String sql="select IFNULL(ejflxh,(select (max(ejflxh)+1) from mus_author_t)) AS xh from mus_author_t where ejfl='"+this.authorNew.getEjfl()+"'";
+		this.ejflxh=this.musicManageService.getPsychologyJdbcDao().getList(sql);
+		if(this.ejflxh.size()>0){
+			for(int i=0;i<this.ejflxh.size();i++){
+				int xh=Integer.parseInt(this.ejflxh.get(0));
+				authorNew.setEjflxh(xh);
+			}
+		}else{
+			String Sql="select max(ejflxh) from mus_author_t";
+			int xh=this.musicManageService.getPsychologyJdbcDao().getTempInt(Sql, 0);
+			authorNew.setEjflxh(xh+1);
+		}
+		
+		int iError=this.musicManageService.saveAuthor(this.authorNew);
+		if(iError>0){
+			this.submitReturnJSONEntity("1", "作者已存在！",this.authorNew.getBh());
+		}else{
+			//添加二维码
+			this.addewm(this.authorNew);
+			this.submitReturnJSONEntity("0", "作者添加成功！",this.authorNew.getBh());
+//			//上传头像
+//			this.uploadtu(this.authorNew);
+		}
+	}
+	
+	/**
+	 * 跳到作者信息修改窗口
+	 * @param authortypeNew
+	 * @return
+	 */
+	public String updateauthorbybh(){
+		String gn=this.request.getParameter("gn");
+		String bh=this.request.getParameter("bh");
+		this.request.setAttribute("gn", gn);
+		String sql="select * from mus_author_t where bh="+bh;
+		this.authorNew=(Author)this.musicManageService.getPsychologyJdbcDao().getList(sql, Author.class).get(0);
+		this.authortypelist=this.musicManageService.findAuthortypelist();
+		this.authorlist=this.musicManageService.findAuthorbyejfl(this.authorNew);
+		return "AddAuthor";
+	}
+	/**
+	 * 修改作者信息
+	 * @return
+	 * @throws Exception 
+	 */
+	public void updateAuthor() throws Exception{
+
+		String sql="select ejflxh from mus_author_t where ejfl='"+this.authorNew.getEjfl()+"'";
+		this.ejflxh=this.musicManageService.getPsychologyJdbcDao().getList(sql);
+		if(this.ejflxh.size()>0){
+			for(int i=0;i<this.ejflxh.size();i++){
+				int xh=Integer.parseInt(this.ejflxh.get(0));
+				authorNew.setEjflxh(xh);
+			}
+		}else{
+			String Sql="select max(ejflxh) from mus_author_t";
+			int xh=this.musicManageService.getPsychologyJdbcDao().getTempInt(Sql, 0);
+			authorNew.setEjflxh(xh+1);
+		}
+		
+		int iError=this.musicManageService.updateAuthor(this.authorNew);
+		if(iError>0){
+			this.submitReturnJSONEntity("1", "作者信息修改失败！",this.authorNew.getBh());
+		}else{
+			this.submitReturnJSONEntity("0", "作者信息修改成功！",this.authorNew.getBh());
+		}
+	}
+	
+	/**
+	 * 删除作者信息
+	 */
+	public void deleteAuthor(){
+		this.delFileOrDerectory("E:\\project\\tup\\WebContent\\author"+"\\"+this.authorNew.getBh());
+		int iError=this.musicManageService.deleteAuthor(this.authorNew);
+		if(iError==0){
+			this.submitReturnJSONString("0", "作者信息删除成功！","");
+		}else{
+			this.submitReturnJSONString("1", "作者信息删除失败！","");
+		}
+	}
+	//删除整个文件夹
+		public boolean delFileOrDerectory(String path){
+			boolean result = false;
+			File file = new File(path);
+			if(file.exists()){
+				if(file.isDirectory()){
+					File[] files = file.listFiles();
+					for(int i=0;i<files.length;i++){
+						files[i].delete();
+					}
+					result = file.delete();
+					return result;
+				}else{
+					result = file.delete();
+					return result;
+				}
+			}
+			return result;
+		}
+	
+	//移除头像，重新添加
+	public void updateAuthortxlj(){
+		String sql="select * from mus_author_t where bh="+this.authorNew.getBh();
+		this.authorNew=(Author)this.musicManageService.getPsychologyJdbcDao().getList(sql, Author.class).get(0);
+		String tp=this.request.getParameter("tp");
+		if(tp.equals("tx")){
+			new File("E:\\project\\tup\\WebContent"+this.authorNew.getTxlj()).delete();
+		}
+		if(tp.equals("bj")){
+			new File("E:\\project\\tup\\WebContent"+this.authorNew.getBjtplj()).delete();
+		}
+		this.musicManageService.updateAuthortxlj(this.authorNew,tp);
+		this.strReturnJson("移除成功，请重新添加文件!");
+	}
+	
+	
+	
+	/**
+	 * 根据作者编号查询出作者的音乐信息
+	 */
+	public void findAuthoridToMusicList(){
+		this.musiclist=this.musicManageService.findAuthoridToMusicList(this.musicNew);
+		if(this.musiclist!=null&&this.musiclist.size()>0){
+			this.listReturnJson(this.musiclist);
+		}else{
+			this.strReturnJson("no,"+String.valueOf(this.musicNew.getZzbh()));
+		}
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * 音乐信息功能跳转
+	 * @return
+	 * @throws Exception 
+	 */
+	public void musicSkip() throws Exception{
+		String gn=this.request.getParameter("gn");
+		if(gn.equals("add")){
+			this.saveMusic();
+		}
+		if(gn.equals("update")){
+			this.updateMusic();
+		}
+	}
+	/**
+	 * 跳到音乐信息添加窗口
+	 * */
+	public String addMusic(){
+		String gn=this.request.getParameter("gn");
+		this.request.setAttribute("gn", gn);
+		this.musiclist=this.musicManageService.findAuthorandMusic(this.musicNew);
+		//this.request.setAttribute("zzbh", this.musicNew.getZzbh());
+		return "AddMusic";
+	}
+	
+	public void saveMusic() throws Exception{
+		musicNew.setBh(this.musicManageService.getPsychologyJdbcDao().getTempInt("select sys_seqnextval_f ('mus_music_s')", 0));
+	        int iError=this.musicManageService.saveMusic(this.musicNew);
+			if(iError>0){
+				this.submitReturnJSONEntity("1", "音乐已存在！",this.musicNew);
+			}else{
+				this.submitReturnJSONEntity("0", "音乐信息添加成功！",this.musicNew);
+			}
+	}
+
+	/* 
+	 * Java文件操作 获取文件扩展名 
+	 */  
+	    public static String getExtensionName(String filename) {   
+	        if ((filename != null) && (filename.length() > 0)) {   
+	            int dot = filename.lastIndexOf('.');   
+	            if ((dot >-1) && (dot < (filename.length() - 1))) {   
+	                return filename.substring(dot + 1);   
+	            }   
+	        }   
+	        return filename;   
+	    }   
+	    
+	/**
+	 * 跳到音乐信息修改窗口
+	 * @param authortypeNew
+	 * @return
+	 */
+	public String updateMusicbybh(){
+		String gn=this.request.getParameter("gn");
+		String bh=this.request.getParameter("bh");
+		this.request.setAttribute("gn", gn);	
+		String sql="select * from mus_music_t where bh="+bh;
+		this.musicNew=(Music)this.musicManageService.getPsychologyJdbcDao().getList(sql, Music.class).get(0);
+		this.musiclist=this.musicManageService.findAuthorandMusic(this.musicNew);
+		this.request.setAttribute("zzzz", this.musicNew.getZzbh());
+		//System.out.println(this.musicNew.getZzbh());
+		return "AddMusic";
+	}
+	
+	/**
+	 * 修改音乐信息
+	 * @return
+	 */
+	public void updateMusic() throws Exception{	
+			int iError=this.musicManageService.updateMusic(this.musicNew);
+			if(iError>0){
+				this.submitReturnJSONEntity("1", "音乐信息修改失败！",this.musicNew);
+			}else{
+				this.submitReturnJSONEntity("0", "音乐信息修改成功！",this.musicNew);
+			}
+	}
+	
+	/**
+	 * 删除音乐信息
+	 */
+	public void deleteMusic(){
+		//删除音乐源
+		String sql="select * from mus_music_t where bh="+this.musicNew.getBh();
+		this.musicNew=(Music)this.musicManageService.getPsychologyJdbcDao().getList(sql, Music.class).get(0);
+		new File("E:\\project\\tup\\WebContent"+this.musicNew.getCflj()).delete(); 
+		int iError=this.musicManageService.deleteMusic(this.musicNew);
+		if(iError==0){
+			this.submitReturnJSONString("0", "音乐信息删除成功！","");
+		}else{
+			this.submitReturnJSONString("1", "音乐信息删除失败！","");
+		}
+	}
+	
+	//移除音乐，重新添加
+	public void updateMusiccflj(){
+		String sql="select * from mus_music_t where bh="+this.musicNew.getBh();
+		this.musicNew=(Music)this.musicManageService.getPsychologyJdbcDao().getList(sql, Music.class).get(0);
+		new File("E:\\project\\tup\\WebContent"+this.musicNew.getCflj()).delete(); 
+		this.musicManageService.updateMusiccflj(this.musicNew);
+		this.strReturnJson("移除成功，请重新上传音乐!");
+	}
+	
+	
+	/**
+	 * 跳到音乐专辑信息修改窗口
+	 * @param authortypeNew
+	 * @return
+	 */
+	public String updateMusiczj(){
+		String gn=this.request.getParameter("gn");
+		String bh=this.request.getParameter("bh");
+		this.request.setAttribute("gn", gn);
+		String sql="select * from mus_music_t where bh="+bh;
+		this.musicNew=(Music)this.musicManageService.getPsychologyJdbcDao().getList(sql, Music.class).get(0);
+		this.musiclist=this.musicManageService.findAuthorandMusic(this.musicNew);
+		return "updatemusiczjmc";
+	}
+	/**
+	 * 修改音乐专辑信息
+	 * @return
+	 */
+	public void updateMusiczjmc(){	
+		String zjmc=this.request.getParameter("oldzjmc");
+		int iError=this.musicManageService.updateMusiczjmc(this.musicNew,zjmc);
+		if(iError>0){
+			this.submitReturnJSONEntity("1", "音乐信息修改失败！",this.musicNew.getZzbh());
+		}else{
+			this.submitReturnJSONEntity("0", "音乐信息修改成功！",this.musicNew.getZzbh());
+		}
+	}
+	/**
+	 * 删除音乐专辑信息
+	 * @throws IOException 
+	 */
+	public void deleteMusiczj(){
+		String sql="select * from mus_music_t where bh="+this.musicNew.getBh();
+		this.musicNew=(Music)this.musicManageService.getPsychologyJdbcDao().getList(sql, Music.class).get(0);
+		//删除整个专辑
+		String sqlcflj="select cflj from mus_music_t where zjmc='"+this.musicNew.getZjmc()+"'";
+		this.musiclist=this.musicManageService.getPsychologyJdbcDao().getList(sqlcflj, Music.class);
+		for(int i = 0;i<this.musiclist.size();i++){
+			new File("E:\\project\\tup\\WebContent"+this.musiclist.get(i).getCflj()).delete(); 
+		}
+		int iError=this.musicManageService.deleteMusiczj(this.musicNew);
+		if(iError==0){
+			this.submitReturnJSONEntity("0", "音乐专辑信息删除成功！","");
+		}else{
+			this.submitReturnJSONEntity("1", "音乐专辑信息删除失败！","");
+		}
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * 推荐功能跳转
+	 * @return
+	 * @throws Exception 
+	 */
+	public void RecommendSkip(){
+		String gn=this.request.getParameter("gn");
+		if(gn.equals("add")){
+			this.saveRecommend();
+		}
+		if(gn.equals("update")){
+			this.updateRecommend();
+		}
+	}
+	/**
+	 * 查询出作者同时跳到推荐功能添加窗口
+	 * */
+	public String addRecommend(){
+		String gn=this.request.getParameter("gn");
+		String zzbh=this.request.getParameter("zzbh");
+		this.request.setAttribute("gn", gn);
+		String sql="select zzxm,bh from mus_author_t where bh="+zzbh;
+		this.recommendNew=(Recommend)this.musicManageService.getPsychologyJdbcDao().getList(sql, Recommend.class).get(0);
+		return "AddRecommend";
+	}
+	public void saveRecommend(){
+		int iError=this.musicManageService.saveRecommend(this.recommendNew);
+		if(iError>0){
+			this.submitReturnJSONEntity("1", "作者已推荐！",this.recommendNew.getBh());
+		}else{
+			this.submitReturnJSONEntity("0", "作者推荐成功！",this.recommendNew.getBh());
+		}
+	}
+	
+	/**
+	 * 跳到推荐功能修改窗口
+	 * @param authortypeNew
+	 * @return
+	 */
+	public String updateRecommendbh(){
+		String gn=this.request.getParameter("gn");
+		String zzbh=this.request.getParameter("zzbh");
+		this.request.setAttribute("gn", gn);
+		String sql="select * from mus_recommend_t where jssj>=curdate() and  bh="+zzbh;
+		this.recommendNew=(Recommend)this.musicManageService.getPsychologyJdbcDao().getList(sql, Recommend.class).get(0);
+		
+		this.request.setAttribute("kssj",this.recommendNew.getKssj().toString());
+		this.request.setAttribute("jssj",this.recommendNew.getJssj().toString());
+		return "AddRecommend";
+	}
+	/**
+	 * 修改推荐功能
+	 * @return
+	 */
+	public void updateRecommend(){	
+
+		int iError=this.musicManageService.updateRecommend(this.recommendNew);
+		if(iError>0){
+			this.submitReturnJSONEntity("1", "作者推荐修改失败！",this.recommendNew.getBh());
+		}else{
+			this.submitReturnJSONEntity("0", "作者已推荐成功！",this.recommendNew.getBh());
+		}
+	}
+	
+	/**
+	 * 删除推荐功能
+	 */
+	public void deleteRecommend(){
+		int iError=this.musicManageService.deleteRecommend(this.recommendNew);
+		if(iError==0){
+			this.submitReturnJSONString("0", "作者已取消推荐成功！","");
+		}else{
+			this.submitReturnJSONString("1", "作者取消推荐失败！","");
+		}
+	}
+
+	
+	
+	
+	
+	
+	/**
+	 * 查询所有作者、音乐、专辑的前10排行
+	 * @return
+	 */
+	public String findcountlist(){
+		//作者
+		this.authorpraiselist=this.musicManageService.findAuthorpraisephtoplist();
+		//专辑
+		this.downloadlistzj=this.musicManageService.findDownloadzjphtoplist();
+		//音乐
+		this.downloadlist=this.musicManageService.findDownloyyadphtoplist();
+		return "findcountlist";
+	}
+	
+	/**
+	 * 查询出所有作者的关注数量、专辑收藏数量、专辑下载数量排行情况
+	 * @return
+	 */
+//	public String findAuthorphtoplist(){
+//		String str=this.request.getParameter("str");
+//		this.authorlist=this.musicManageService.findAuthorphtoplist(str);
+//		this.listReturnJson(this.authorlist);
+//		return "findAuthorphtoplist";
+//	}
+//	
+	////////////分页查询作者////////////////
+	public void findAuthorphtoplist(){
+		String str=this.request.getParameter("str");
+		String sch=this.request.getParameter("sch");
+		this.pageResultInit();
+		String pageNo=this.request.getParameter("pageNo");
+		this.pageResult=new PageResult();
+		this.pageResult.setPageNo(Integer.valueOf(pageNo));
+		this.pageResult.setPageSize(10);
+		this.pageResult=this.musicManageService.findAuthorphtoplist(this.pageResult,str,sch);
+		this.entityReturnJson(this.pageResult);
+	}
+	/////////////////////////////
+/*	/**
+	 * 查询出所有专辑的下载数量和收藏数量
+	 * @return
+	 *//*
+	public String findMusiczjphtoplist(){
+		this.musiclist=this.musicManageService.findMusiczjphtoplist();
+		return "findMusiczjphtoplist";
+	}*/
+	
+	////////////分页查询专辑////////////////
+	public void findMusiczjphtoplist(){
+		this.pageResultInit();
+		String pageNo=this.request.getParameter("pageNo");
+		String sch=this.request.getParameter("sch");
+		String str=this.request.getParameter("str");
+		this.pageResult=new PageResult();
+		this.pageResult.setPageNo(Integer.valueOf(pageNo));
+		this.pageResult.setPageSize(10);
+		this.pageResult=this.musicManageService.findMusiczjphtoplist(this.pageResult,str,sch);
+		this.entityReturnJson(this.pageResult);
+	}
+	/////////////////////////////
+	
+/*	/**
+	 * 查询出所有音乐的下载数量和收藏数量
+	 * @return
+	 *//*
+	public String findMusicyyphtoplist(){
+		this.musiclist=this.musicManageService.findMusicyyphtoplist();
+		return "findMusicyyphtoplist";
+	}*/
+	
+	////////////分页查询音乐////////////////
+	public void findMusicyyphtoplist(){
+		this.pageResultInit();
+		String pageNo=this.request.getParameter("pageNo");
+		String str=this.request.getParameter("str");
+		String sch=this.request.getParameter("sch");
+		this.pageResult=new PageResult();
+		this.pageResult.setPageNo(Integer.valueOf(pageNo));
+		this.pageResult.setPageSize(10);
+		this.pageResult=this.musicManageService.findMusicyyphtoplist(this.pageResult,str,sch);
+		this.entityReturnJson(this.pageResult);
+		}
+	/////////////////////////////
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * 生成二维码
+	 * @throws IOException 
+	 */
+	@SuppressWarnings({ "rawtypes", "static-access" })
+	public void addewm(Author authorNew) throws Exception{
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss"); 
+		String hfsj = formatter.format(new Date()); 
+
+		File authorForder=new File(this.musicManageService.getPsychologyJdbcDao().getTempExcelExpPath()+"/author/"+this.authorNew.getBh());
+		if(!authorForder.exists()||!authorForder.isDirectory())
+			authorForder.mkdirs(); 
+		
+		String ewmlj =String.valueOf(this.authorNew.getBh());
+		//System.out.println(ewmz);
+        int width = 300;  
+        int height = 300;  
+        //二维码的图片格式  
+        String format = "gif"; 
+        Hashtable hints = new Hashtable();  
+        //内容所使用编码  
+        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");  
+        BitMatrix bitMatrix = new MultiFormatWriter().encode(ewmlj,  
+                BarcodeFormat.QR_CODE, width, height, hints);  
+        //生成二维码  
+        File outputFile = new File(this.musicManageService.getPsychologyJdbcDao().getTempExcelExpPath()+"/author/"+this.authorNew.getBh()+"/"+"ewm"+this.authorNew.getBh()+".gif");  
+        this.musicManageService.writeToFile(bitMatrix, format, outputFile);  
+	}
+
+	
+	//上传图像
+	public void uploadtu() throws Exception {  
+		//String bh=this.request.getParameter("bh").toString();
+		 File file = new File(this.musicManageService.getPsychologyJdbcDao().getTempExcelExpPath()+"/author/"+this.authorNew.getBh()+"/");  
+		 if(!file .exists() && !file .isDirectory()){
+		    	file .mkdirs();  
+		 }
+		String uploadname = null;
+		if(this.uploadFileName!=null&&this.authorNew!=null){
+			for(int i=0;i<uploadFileName.length;i++){
+				uploadname=uploadFileName[i];
+					authorNew.setTxlj("/author/"+this.authorNew.getBh()+"/"+this.authorNew.getBh()+"."+getExtensionName(uploadname));
+					authorNew.setBjtplj("/author/"+this.authorNew.getBh()+"/"+"bj"+this.authorNew.getBh()+"."+getExtensionName(uploadname));
+					String sql="update mus_author_t set txlj='"+authorNew.getTxlj()+"',bjtplj='"+authorNew.getBjtplj()+"' where bh="+this.authorNew.getBh();
+					this.musicManageService.getPsychologyJdbcDao().executeSQL(sql);
+			}
+		
+		    File txFile = new File(this.musicManageService.getPsychologyJdbcDao().getTempExcelExpPath()+"/author/"+this.authorNew.getBh()+"/"+this.authorNew.getBh()+"."+getExtensionName(uploadname));  
+		    File bjFile = new File(this.musicManageService.getPsychologyJdbcDao().getTempExcelExpPath()+"/author/"+this.authorNew.getBh()+"/"+"bj"+this.authorNew.getBh()+"."+getExtensionName(uploadname));  
+		  
+			File uploadsrctu = null;
+			File uploadsrcbj = null;
+			for(int i=0;i<upload.length;i++){
+				if(i==0){
+					uploadsrctu=upload[0];
+					copy(uploadsrctu, txFile); 
+				}
+				if(i==1){
+					uploadsrcbj=upload[1];
+					copy(uploadsrcbj, bjFile);  
+				}
+			}
+		}
+	}  
+	
+	//上传音乐
+	public void uploadmusic() throws Exception {  
+		if(this.uploadFileName!=null&&this.musicNew.getZzbh()!=null&&this.musicNew.getBh()!=null){
+			File authorForder=new File(this.musicManageService.getPsychologyJdbcDao().getTempExcelExpPath()+"/author/"+this.musicNew.getZzbh());
+			if(!authorForder.exists()||!authorForder.isDirectory())
+				authorForder.mkdirs(); 
+			
+				String uploadname = null;
+				for(int i=0;i<uploadFileName.length;i++){
+					uploadname=uploadFileName[i];
+					String filePath="/author/"+this.musicNew.getZzbh()+"/"+this.musicNew.getBh()+"."+getExtensionName(uploadname);
+					musicNew.setCflj(filePath);
+					
+					File desflie = new File(this.musicManageService.getPsychologyJdbcDao().getTempExcelExpPath()+filePath);   
+					if (!desflie .exists() )       
+						desflie.delete();
+					
+					File uploadsrc = null;
+					for(int j=0;j<upload.length;j++){
+						uploadsrc=upload[0];
+					    copy(uploadsrc, desflie);  
+					}
+		
+					MP3File f = (MP3File)AudioFileIO.read(desflie);  
+			        MP3AudioHeader audioHeader = (MP3AudioHeader)f.getAudioHeader();  
+			        float a=audioHeader.getTrackLength();
+			        float b=audioHeader.getBitRateAsNumber(); 
+			        float c=(a*b/8)/1024;
+			        musicNew.setBfsc(a/60);
+			        musicNew.setWjdx(c);
+			        
+			    	String sql="update mus_music_t set cflj='"+musicNew.getCflj()+"',bfsc='"+musicNew.getBfsc()+"',wjdx='"+musicNew.getWjdx()+"' where bh="+this.musicNew.getBh();
+					this.musicManageService.getPsychologyJdbcDao().executeSQL(sql);
+			}
+		}else{
+			this.submitReturnJSONEntity("1", "音乐已存在！",this.musicNew);
+		}
+	}
+	
+	
+	private void copy(File src, File dst) {  
+	    InputStream in = null;  
+	    OutputStream out = null;  
+	    try {  
+	        int BUFFER_SIZE=100;
+			out = new BufferedOutputStream(new FileOutputStream(dst),BUFFER_SIZE);  
+	        in = new BufferedInputStream(new FileInputStream(src), BUFFER_SIZE);  
+	  
+	            byte[] buffer = new byte[BUFFER_SIZE];  
+	        int len = 0;  
+	        while ((len = in.read(buffer)) > 0) {  
+	            out.write(buffer, 0, len);  
+	        }   
+	    } catch (Exception e) {  
+	        e.printStackTrace();  
+	    } finally {  
+	        if (null != in) {  
+	        	
+	            try {  
+	                in.close();  
+	            } catch (IOException e) {  
+	                e.printStackTrace();  
+	            }  
+	        }  
+	        if (null != out) {  
+	            try {  
+	                out.close();  
+	            } catch (IOException e) {  
+	                e.printStackTrace();  
+	            }  
+	        }  
+	    }  
+	}  
+	//
+		    
+	
+	
+}

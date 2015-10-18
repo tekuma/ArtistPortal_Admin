@@ -1,0 +1,129 @@
+package com.zhhb.system.action;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import com.pintu.pub.action.BaseAction;
+import com.zhhb.server.comm.PublicUilt;
+import com.zhhb.system.entity.Functionlist;
+import com.zhhb.system.entity.User;
+import com.zhhb.system.service.LoginService;
+
+
+@SuppressWarnings({ "unused", "unchecked", "serial" })
+@Scope("prototype")
+@Controller(value = "loginAction")
+public class LoginAction extends BaseAction {
+	@Resource
+	private LoginService loginService;
+	private User userNew;
+	private List<Functionlist> xtgnlist;
+	private List<Functionlist> xtgnfllist;
+	
+	public void setLoginService(LoginService loginService) {
+		this.loginService = loginService;
+	}
+	public User getUserNew() {
+		return userNew;
+	}
+	public void setUserNew(User userNew) {
+		this.userNew = userNew;
+	}
+
+	public List<Functionlist> getXtgnlist() {
+		return xtgnlist;
+	}
+	public void setXtgnlist(List<Functionlist> xtgnlist) {
+		this.xtgnlist = xtgnlist;
+	}
+	public List<Functionlist> getXtgnfllist() {
+		return xtgnfllist;
+	}
+	public void setXtgnfllist(List<Functionlist> xtgnfllist) {
+		this.xtgnfllist = xtgnfllist;
+	}
+	/**
+	 * 登录验证
+	 * */
+	public String login() {
+		int iCount=0;
+		String iError="0";
+		String sql="";
+		if(this.userNew!=null){
+			if(this.userNew.getDlmc()!=null&&!this.userNew.getDlmc().equals("")){
+				sql="select count(1) from sys_user_t where DLMC='"+this.userNew.getDlmc()+"'";
+				iCount=this.loginService.getPublicJdbcDao().getTempInt(sql, 0);
+				if(iCount>0){
+					if(this.userNew.getDlmm()!=null&&!this.userNew.getDlmm().equals("")){
+						sql="select count(1) from sys_user_t where DLMC='"+this.userNew.getDlmc()+"' and DLMM='"+this.userNew.getDlmm()+"'";
+						iCount=this.loginService.getPublicJdbcDao().getTempInt(sql, 0);
+						if(iCount>0){
+							this.loginSucceed();
+							iError="0";
+						}else{
+							iError="5";//登录用户和口令不匹配
+						}
+					}else{
+						iError="3";//登陆口令不能为空
+						
+					}
+				}else{
+					iError="4";//没有找到该用户
+				}
+				
+			}else{
+				iError="2";//登陆名称不能为空
+			}
+		}else{
+			iError="1";//数据错误
+		}
+		
+		if(iError.equals("0")){
+			return "index";
+		}else{
+			request.setAttribute("iError", iError);
+			return "login";
+		}
+	}
+	
+	/***
+	 * 登陆成功 加载功能导航栏
+	 * */
+	public void loginSucceed(){
+		this.userNew=this.loginService.findUser(this.userNew);
+		this.request.getSession().setAttribute("sessionUser", this.userNew);
+		this.xtgnfllist=PublicUilt.findPublicXtgn("'功能模块'",this.userNew,this.loginService.getPublicJdbcDao());
+		String gnflstr="";
+		for(Functionlist xtgn:xtgnfllist){
+			gnflstr+="'"+xtgn.getGnmc()+"',";
+		}
+		if(gnflstr!=null&&!gnflstr.equals("")){
+			gnflstr=gnflstr.substring(0, gnflstr.length()-1);
+		}
+		this.xtgnlist=PublicUilt.findPublicXtgn(gnflstr,this.userNew,this.loginService.getPublicJdbcDao());
+		/*this.request.getSession().setAttribute("sissionXtgnlist", this.xtgnlist);
+		this.request.getSession().setAttribute("sissionXtgnfllist", this.xtgnfllist);*/
+		
+		// 查询出文件图片地址
+		this.request.getSession().setAttribute("sissionFileSerURL", this.loginService.getPublicJdbcDao().getTempStr("select csz from sys_param_t where csmc='文件服务器地址'", ""));
+		
+		
+	}
+	
+	/**
+	 * 退出系统
+	 * @return
+	 * */
+	public String exitIndex(){
+		this.request.getSession().removeAttribute("sessionUser");
+		this.request.getSession().removeAttribute("sessionZzjglist");
+		return "login";
+	}
+}

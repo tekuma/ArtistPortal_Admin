@@ -1,0 +1,29 @@
+package com.zhhb.system.entity;
+
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Authortype extends BaseEntity {
+	
+	private Integer bh;//编号
+	private String lbmc;//音乐类别名称
+	
+	
+	
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public String getLbmc() {
+		return lbmc;
+	}
+	public void setLbmc(String lbmc) {
+		this.lbmc = lbmc;
+	}
+	
+	
+	
+	
+}

@@ -1,0 +1,33 @@
+package com.zhhb.system.entity;
+
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Forbiddenwords extends BaseEntity {
+	
+	private Integer bh;//编号
+	private String chfl;//词汇分类
+	private String chnr;//词汇内容
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public String getChfl() {
+		return chfl;
+	}
+	public void setChfl(String chfl) {
+		this.chfl = chfl;
+	}
+	public String getChnr() {
+		return chnr;
+	}
+	public void setChnr(String chnr) {
+		this.chnr = chnr;
+	}
+	
+	
+	
+	
+}

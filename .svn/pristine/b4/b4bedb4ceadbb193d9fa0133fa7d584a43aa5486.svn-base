@@ -1,0 +1,48 @@
+package com.zhhb.system.entity;
+
+import java.util.Date;
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Log extends BaseEntity {
+	
+	private Integer bh;//编号
+	private String czy;//操作员
+	private Date czsj;//操作时间
+	private String czgn;//操作功能
+	private String cznr;//操作内容
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public String getCzy() {
+		return czy;
+	}
+	public void setCzy(String czy) {
+		this.czy = czy;
+	}
+	public Date getCzsj() {
+		return czsj;
+	}
+	public void setCzsj(Date czsj) {
+		this.czsj = czsj;
+	}
+	public String getCzgn() {
+		return czgn;
+	}
+	public void setCzgn(String czgn) {
+		this.czgn = czgn;
+	}
+	public String getCznr() {
+		return cznr;
+	}
+	public void setCznr(String cznr) {
+		this.cznr = cznr;
+	}
+	
+	
+	
+	
+}

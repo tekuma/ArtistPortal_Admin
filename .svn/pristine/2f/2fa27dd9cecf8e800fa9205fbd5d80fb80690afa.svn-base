@@ -1,0 +1,136 @@
+package com.zhhb.system.entity;
+
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Music extends BaseEntity {
+	
+	private Integer bh;//编号
+	private String yymc;//音乐名称
+	private String cflj;//存放路径
+	private String zjmc;//专辑名称
+	private Float bfsc;//播放时长
+	private Float xzjfjg;//下载积分价格
+	private Float xzhbjg;//下载货币价格
+	private String bz;//备注
+	private Integer dzsl;//点赞数量
+	private Integer zzbh;//作者编号
+	private Float wjdx;//文件大小
+	
+	private String sc;//收藏
+	private String xz;//下载
+	private String dz;//点赞
+	private String zzxm;//作者姓名
+	private String zjpx;//专辑排序
+	private String yypx;//音乐排序
+	
+	
+	
+	public String getZjpx() {
+		return zjpx;
+	}
+	public void setZjpx(String zjpx) {
+		this.zjpx = zjpx;
+	}
+	public String getYypx() {
+		return yypx;
+	}
+	public void setYypx(String yypx) {
+		this.yypx = yypx;
+	}
+	public String getDz() {
+		return dz;
+	}
+	public void setDz(String dz) {
+		this.dz = dz;
+	}
+	public String getSc() {
+		return sc;
+	}
+	public void setSc(String sc) {
+		this.sc = sc;
+	}
+	public String getXz() {
+		return xz;
+	}
+	public void setXz(String xz) {
+		this.xz = xz;
+	}
+	public String getZzxm() {
+		return zzxm;
+	}
+	public void setZzxm(String zzxm) {
+		this.zzxm = zzxm;
+	}
+	public Float getWjdx() {
+		return wjdx;
+	}
+	public void setWjdx(Float wjdx) {
+		this.wjdx = wjdx;
+	}
+	public Integer getBh() {
+		return bh;
+	}
+	public void setBh(Integer bh) {
+		this.bh = bh;
+	}
+	public String getYymc() {
+		return yymc;
+	}
+	public void setYymc(String yymc) {
+		this.yymc = yymc;
+	}
+	public String getCflj() {
+		return cflj;
+	}
+	public void setCflj(String cflj) {
+		this.cflj = cflj;
+	}
+	public String getZjmc() {
+		return zjmc;
+	}
+	public void setZjmc(String zjmc) {
+		this.zjmc = zjmc;
+	}
+	
+	public Float getBfsc() {
+		return bfsc;
+	}
+	public void setBfsc(Float bfsc) {
+		this.bfsc = bfsc;
+	}
+	public Float getXzjfjg() {
+		return xzjfjg;
+	}
+	public void setXzjfjg(Float xzjfjg) {
+		this.xzjfjg = xzjfjg;
+	}
+	public Float getXzhbjg() {
+		return xzhbjg;
+	}
+	public void setXzhbjg(Float xzhbjg) {
+		this.xzhbjg = xzhbjg;
+	}
+	public String getBz() {
+		return bz;
+	}
+	public void setBz(String bz) {
+		this.bz = bz;
+	}
+	public Integer getDzsl() {
+		return dzsl;
+	}
+	public void setDzsl(Integer dzsl) {
+		this.dzsl = dzsl;
+	}
+	public Integer getZzbh() {
+		return zzbh;
+	}
+	public void setZzbh(Integer zzbh) {
+		this.zzbh = zzbh;
+	}
+
+	
+	
+	
+}

@@ -1,0 +1,33 @@
+package com.zhhb.system.entity;
+
+import com.pintu.pub.entity.BaseEntity;
+
+@SuppressWarnings("serial")
+public class Sequence extends BaseEntity {
+	
+	private String xlmc;//序列名称
+	private Integer dqz;//当前值
+	private Integer bc;//步长
+	
+	
+	public String getXlmc() {
+		return xlmc;
+	}
+	public void setXlmc(String xlmc) {
+		this.xlmc = xlmc;
+	}
+	public Integer getDqz() {
+		return dqz;
+	}
+	public void setDqz(Integer dqz) {
+		this.dqz = dqz;
+	}
+	public Integer getBc() {
+		return bc;
+	}
+	public void setBc(Integer bc) {
+		this.bc = bc;
+	}
+	
+	
+}
