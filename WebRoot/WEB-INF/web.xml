@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xmlns="http://java.sun.com/xml/ns/javaee" 
-    xmlns:web="http://java.sun.com/xml/ns/javaee" 
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/config/spring*.xml</param-value>
@@ -12,7 +9,7 @@
   </listener>
   <context-param>
     <param-name>webAppRootKey</param-name>
-    <param-value>PsychologyClientServer.root</param-value>
+    <param-value>ArtistPortal_Admin.root</param-value>
   </context-param>
   <context-param>
     <param-name>log4jConfigLocation</param-name>
@@ -66,9 +63,9 @@
   <error-page>
     <error-code>404</error-code>
     <location>/error.jsp</location>
-  </error-page> 
+  </error-page>
   <error-page>
-	<exception-type>java.lang.Exception</exception-type>
-	<location>/error.jsp</location>
+    <exception-type>java.lang.Exception</exception-type>
+    <location>/error.jsp</location>
   </error-page>
 </web-app>
