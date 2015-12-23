@@ -3,6 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8s">
 <link href='http://fonts.googleapis.com/css?family=Courgette' rel='stylesheet' type='text/css'>
 <link href="../css/error_style.css" rel="stylesheet"/>
@@ -16,7 +17,7 @@ var time = document.getElementById("time");
 t--;
 time.innerText=t;
 if (t<=0) {
-location.href="http://54.164.11.232/TekumaServer";
+location.href="http://52.2.188.227:8080/TekumaServer";
 clearInterval(inter);
 };
 }

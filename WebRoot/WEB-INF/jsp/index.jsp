@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>tekuma-Management system</title>
+	<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
 	<link href="../css/index_style.css" rel="stylesheet"/>
 	
 	<script type="text/javascript">
@@ -49,7 +50,7 @@
     			pagnum=pageNo;
     		}
     		var pageNom=${pageResult.pageNo}+1;
-    		document.getElementById("index_divid_content").style.display="none";
+    		
     		var URL="tekuma_findMemberlistajax.do?pageNo="+pagnum+"&letters="+letters+"&categories="+indexcategories+"&styles="+indexstyles+"&subjects="+indexsubjects;
     		$.ajax({url:URL,cache:false,dataType:"json",
     			success:function(pageResult){
@@ -63,7 +64,7 @@
     						if(pageResult.list[i].avatarpath!=undefined&&pageResult.list[i].avatarpath!=null&&pageResult.list[i].avatarpath!=""){
     							memberlistHTML+="<img src=\""+sissionFileSerURL+""+pageResult.list[i].avatarpath+"\" style=\"cursor: pointer;\" width=\"105px\" height=\"100px\"><br/>";
     						}else{
-    							memberlistHTML+="<img src=\"../images/Default Avatar .gif\" style=\"cursor: pointer;\" width=\"105px\" height=\"100px\"><br/>";
+    							memberlistHTML+="<img src=\"../images/DefaultAvatar.gif\" style=\"cursor: pointer;\" width=\"105px\" height=\"100px\"><br/>";
     						}
     						memberlistHTML+="</div>";
     						memberlistHTML+="<p style=\"cursor: pointer;\">"
@@ -96,6 +97,9 @@
     					memberlistHTML+="<p align=\"center\">No data please reload</p>";
     				}
     				//alert(memberlistHTML);
+    				//document.getElementById("index_divid_content").style.display="none";
+    				$("#index_divid_content").fadeOut(300);
+    				$("#index_divid_content").attr("display","none");
     				$(".divclass_index_content").html(memberlistHTML);
     			}
     		});
@@ -159,14 +163,14 @@
 
 		<!-- 加载等待图 -->
 		 //显示和隐藏加载图片
-    	 function showdiv() {
+    	 /* function showdiv() {
     		document.getElementById("bg").style.display ="block";
     	 }
     	 function hidediv() {
     		document.getElementById("bg").style.display ="none";
     	 }
     	 setTimeout("showdiv();",1000);
-    	 setTimeout("hidediv();",2000);
+    	 setTimeout("hidediv();",2000); */
 		
 		
     </script>
@@ -203,7 +207,7 @@
 				<span class="span2">&nbsp;&nbsp;</span>
 			  	<div class="div2">
 			  		<div class="div11 div222"></div>
-			  		<div style="margin-top: 25px;"><a href="javascript:void(0)" onclick="location.href='http://127.0.0.1:8080/tekumaServer/'" style="color:green;">Sign out</a></div>
+			  		<div style="margin-top: 25px;"><a href="javascript:void(0)" onclick="location.href='http://127.0.0.1:8080/TekumaServer/'" style="color:green;">Sign out</a></div>
 			  	</div>
 			   	<div class="div1">
 			        <div class="div11 div111"></div>
@@ -459,7 +463,8 @@
 			//alert(contentURL);
 			public_menuContentURL=contentURL;
 			public_openContent(contentURL);
-			document.getElementById("index_dinid_Collectionlist").style.display="none";
+			//document.getElementById("index_dinid_Collectionlist").style.display="none";
+			
 		}
 			
 	</script>

@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
+<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
 <link href="../css/index_style3.css" rel="stylesheet" type="text/css">
 <link href="../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
@@ -37,7 +38,7 @@
 	
 </script>
 
-	<div>哈根</div>
+
 	<div align="center" style="margin-top: 3%;">
 		<div class="form-group">
 			<div class="col-sm-10">

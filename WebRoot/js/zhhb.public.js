@@ -7,11 +7,16 @@ function public_openContent(contentURL){
 	public_ajaxPara.dataType="html";
 	public_ajaxPara.success=function(contentHTML){
 		//alert(contentHTML);
+		$("#index_dinid_Collectionlist").fadeOut();
+		//$("#index_dinid_Collectionlist").attr("display","none");
 		$(".divclass_index_content").html(contentHTML);
 		//
 	};
 	public_ajaxPara.beforeSend=function(){
-		$(".divclass_index_content").html("");
+		if(contentURL.indexOf("findcollwnlist")){
+			$("#index_dinid_Collectionlist").fadeIn();
+		}
+		//$(".divclass_index_content").html("");
 	};
 	public_ajaxPara.complete=function(){
 		//$("#bodyid_index_body").css("cursor","default");

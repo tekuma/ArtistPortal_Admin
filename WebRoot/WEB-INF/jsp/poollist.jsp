@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
+<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
 <link href="../css/index_style3.css" rel="stylesheet" type="text/css">
 <link href="../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 

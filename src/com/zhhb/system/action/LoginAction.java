@@ -17,63 +17,88 @@ import com.zhhb.system.service.TekumaService;
 import com.zhhb.system.entity.Member;
 import com.zhhb.system.entity.User;
 
-
-@SuppressWarnings({ "unused","serial" })
+@SuppressWarnings({ "unused", "serial" })
 @Scope("prototype")
 @Controller(value = "loginAction")
 public class LoginAction extends BaseAction {
 	@Resource
 	private TekumaService tekumaservice;
-	
+
 	private User userNew;
 	private List<Member> membertypelist;
-
 
 	public User getUserNew() {
 		return userNew;
 	}
+
 	public void setUserNew(User userNew) {
 		this.userNew = userNew;
 	}
+
 	public List<Member> getMembertypelist() {
 		return membertypelist;
 	}
+
 	public void setMembertypelist(List<Member> membertypelist) {
 		this.membertypelist = membertypelist;
 	}
 
-	
-	
+	public static String uname="";//缓存用户名
+	public static String upwd="";//缓存密码
 	
 	/**
 	 * 登录验证
-	 * @throws IOException 
+	 * 
+	 * @throws IOException
 	 * */
-	public String login() throws IOException {
-		String sql="select count(1) from tk_user_t where LoginName='"+this.userNew.getLoginname()+"' and LoginPwd='"+this.userNew.getLoginpwd()+"'";
-		int iCount=this.tekumaservice.getPsychologyJdbcDao().getTempInt(sql, 0);
+	public void login() throws IOException {
+		String sql;
+		String iError="0";
+		int iCount=0;
+		sql="select count(1) from tk_user_t where LoginName='"+ this.userNew.getLoginname() + "'";
+		iCount=this.tekumaservice.getPsychologyJdbcDao().getTempInt(sql, 0);
 		if(iCount>0){
-			this.userNew=this.tekumaservice.findUser(this.userNew);
-			this.request.getSession().setAttribute("yhxm", this.userNew.getUsername());
-			this.pageResultInit();
-			String pageNo="1";
-			String letters=this.request.getParameter("letters");
-			String categories=this.request.getParameter("categories");
-			String styles=this.request.getParameter("styles");
-			String subjects=this.request.getParameter("subjects");
-			this.pageResult=new PageResult();
-			this.pageResult.setPageNo(Integer.valueOf(pageNo));
-			this.pageResult.setPageSize(14);
-			this.pageResult=this.tekumaservice.findMemberlist(this.pageResult,letters,categories,styles,subjects);
-			// 查询出文件图片地址
-			this.request.getSession().setAttribute("sissionFileSerURL", this.tekumaservice.getPsychologyJdbcDao().getTempStr("select csz from sys_param_t where csmc='文件服务器地址'", ""));
-			return "index";
+			sql = "select count(1) from tk_user_t where LoginName='"+ this.userNew.getLoginname() + "' and LoginPwd='"
+					+ this.userNew.getLoginpwd() + "'";
+			iCount = this.tekumaservice.getPsychologyJdbcDao().getTempInt(sql,0);
+			if (iCount > 0) {
+				uname=this.userNew.getLoginname();
+				upwd=this.userNew.getLoginpwd();
+				iError="0";
+			} else {
+				iError="2";//登录用户和口令不匹配
+			}
 		}else{
-			response.sendRedirect("http://52.1.199.42/TekumaServer//");
+			iError="1";//没有找到该用户
 		}
-			return "index";
+		this.strReturnJson(iError);
 	}
 	
-	
-	
+	/**
+	 * 登录跳转
+	 * @return
+	 */
+	public String longining(){
+		User userNew=new User();
+		userNew.setLoginname(uname);
+		userNew.setLoginpwd(upwd);
+		this.userNew = this.tekumaservice.findUser(userNew);
+		this.request.getSession().setAttribute("yhxm",this.userNew.getUsername());
+		this.pageResultInit();
+		String pageNo = "1";
+		String letters = this.request.getParameter("letters");
+		String categories = this.request.getParameter("categories");
+		String styles = this.request.getParameter("styles");
+		String subjects = this.request.getParameter("subjects");
+		this.pageResult = new PageResult();
+		this.pageResult.setPageNo(Integer.valueOf(pageNo));
+		this.pageResult.setPageSize(14);
+		this.pageResult = this.tekumaservice.findMemberlist(
+				this.pageResult, letters, categories, styles, subjects);
+		// 查询出文件图片地址
+		this.request.getSession().setAttribute("sissionFileSerURL",this.tekumaservice.getPsychologyJdbcDao().getTempStr(
+						"select csz from sys_param_t where bh='3'",""));
+		return "index";
+	}
+
 }
